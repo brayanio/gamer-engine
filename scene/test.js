@@ -1,5 +1,5 @@
 import gamer from '../_gamer/gamer.js'
-import movable from '../behaviour/moveable.js'
+import movable from '../behavior/moveable.js'
 import movepad from '../prefab/move-pad.js'
 import dragon from '../prefab/dragon.js'
 
