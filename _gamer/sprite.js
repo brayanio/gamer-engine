@@ -1,12 +1,13 @@
 import CONSTANT from '../constant.js'
 
-const sprite = (x, y, width, height) => {
+const sprite = () => {
   let animations = {}
   let index = 0, animationPriority = 0
   let currentAnimation
-  let bounds = {x, y, width, height}
+  let bounds = {x: 0, y: 0, width: 0, height: 0}
   let flipped = false
   let outline = false
+  let behaviors = {}
 
   const flip = isFlip => {
     if(isFlip !== undefined)
@@ -26,6 +27,14 @@ const sprite = (x, y, width, height) => {
   const addAnimation = (name, ...srcAr) => {
     animations[name] = srcAr
     if( !currentAnimation ) currentAnimation = name
+  }
+
+  const addBehavior = (name, detatch) => behaviors[name] = detatch
+  const removeBehavior = name => {
+    if(behaviors[name]){
+      behaviors[name]()
+      delete behaviors[name]
+    }
   }
 
   const load = engine => {
@@ -76,6 +85,20 @@ const sprite = (x, y, width, height) => {
     checkBounds()
   }
 
+  const setBounds = (x, y, width, height) => {
+    bounds.x = x
+    bounds.y = y
+    bounds.width = width
+    bounds.height = height
+  }
+  const setPosition = (x, y) => {
+    bounds.x = x
+    bounds.y = y
+  }
+  const setSize = (width, height) => {
+    bounds.width = width
+    bounds.height = height
+  }
   const getBounds = () => bounds
 
   const checkBounds = () => {
@@ -99,7 +122,8 @@ const sprite = (x, y, width, height) => {
     // functions
     setAnimation, addAnimation, load, render,
     postRender, move, flip, getBounds, checkBounds,
-    setOutline
+    setOutline, addBehavior, removeBehavior,
+    setBounds, setPosition, setSize
   }
 }
 

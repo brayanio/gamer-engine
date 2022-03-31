@@ -4,6 +4,10 @@
 /* 3: ui layer */
 /* 100: loading */
 
+html, body{
+  background: black;
+}
+
 canvas{
   position: fixed;
   top: 0;

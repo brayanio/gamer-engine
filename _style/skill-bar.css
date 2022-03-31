@@ -1,7 +1,19 @@
 .skillbar{
   display: flex;
   bottom: 15px;
-  left: 15px;
+}
+
+@media screen and (min-width: 801px){
+  .skillbar{
+    left: 15px;
+  }
+}
+@media screen and (max-width: 800px){
+  .skillbar{
+    display: flex;
+    bottom: 150px;
+    right: 15px;
+  }
 }
 
 .skillbar button{
