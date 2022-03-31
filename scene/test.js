@@ -1,9 +1,9 @@
-import engine from '../engine/engine.js'
+import gamer from '../_gamer/gamer.js'
 import movable from '../behaviour/moveable.js'
 import movepad from '../prefab/move-pad.js'
 import dragon from '../prefab/dragon.js'
 
-const scene = engine.scene( dragon )
+const scene = gamer.scene( dragon )
 
 const player = movable( dragon )
 player.setSpeed(60)

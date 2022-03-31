@@ -1,4 +1,4 @@
-import engine from '../engine/engine.js'
+import gamer from '../_gamer/gamer.js'
 
 let sprite
 

@@ -1,5 +1,5 @@
-import engine from './engine/engine.js'
+import gamer from './_gamer/gamer.js'
 import testScene from './scene/test.js'
 
-engine.setup()
-engine.openScene( testScene )
+gamer.setup()
+gamer.openScene( testScene )

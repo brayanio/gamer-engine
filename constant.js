@@ -1,5 +1,5 @@
 export default {
-  RESOLUTION: [1080, 1920],
+  RESOLUTION: [1920, 1080],
   FRAMES_PER_SECOND: 30,
   MOVEMENT_KEY: {
     UP: 'w',

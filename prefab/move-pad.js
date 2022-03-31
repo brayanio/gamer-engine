@@ -1,4 +1,4 @@
-import engine from '../engine/engine.js'
+import gamer from '../_gamer/gamer.js'
 
 const el = document.createElement('section')
 el.classList.add('movepad')
@@ -14,11 +14,11 @@ el.innerHTML = `
 `
 
 export default () => {
-  engine.ui.appendChild(el)
+  gamer.ui.appendChild(el)
   ;['up', 'left', 'right', 'down'].forEach(key => {
-    engine.getUI(key).onmousedown = () => engine.setKeyState(key, true)
-    engine.getUI(key).onmouseup = () => engine.setKeyState(key, false)
-    engine.getUI(key).ontouchstart = () => engine.setKeyState(key, true)
-    engine.getUI(key).ontouchend = () => engine.setKeyState(key, false)
+    gamer.getUI(key).onmousedown = () => gamer.setKeyState(key, true)
+    gamer.getUI(key).onmouseup = () => gamer.setKeyState(key, false)
+    gamer.getUI(key).ontouchstart = () => gamer.setKeyState(key, true)
+    gamer.getUI(key).ontouchend = () => gamer.setKeyState(key, false)
   })
 }
