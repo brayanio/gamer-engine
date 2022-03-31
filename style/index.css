@@ -1,2 +1,4 @@
 @import url("gamer.css");
 @import url("move-pad.css");
+@import url('https://fonts.googleapis.com/css2?family=Palette+Mosaic&display=swap');
+* { font-family: 'Palette Mosaic', sans-serif; }

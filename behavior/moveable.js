@@ -19,9 +19,9 @@ const movement = () => {
 
   // set animation
   if( gamer.isMoveActive() ) 
-    sprite.setAnimation('move')
+    sprite.setAnimation('Walking')
   else 
-    sprite.setAnimation('idle')
+    sprite.setAnimation('Idle')
 }
 
 const setSpeed = n => speed = n

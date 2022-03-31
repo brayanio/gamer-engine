@@ -1,12 +1,15 @@
 import gamer from '../_gamer/gamer.js'
 import movable from '../behavior/moveable.js'
 import movepad from '../prefab/move-pad.js'
-import dragon from '../prefab/dragon.js'
+import redMage from '../prefab/red-mage.js'
+import greenMage from '../prefab/green-mage.js'
 
-const scene = gamer.scene( dragon )
+const scene = gamer.scene()
+scene.addSprite(redMage)
+scene.addSprite(greenMage)
 
-const player = movable( dragon )
-player.setSpeed(60)
+const player = movable( greenMage )
+player.setSpeed(30)
 
 scene.onPreRender(() => {
   player.movement()
