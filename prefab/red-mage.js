@@ -1,5 +1,5 @@
 import gamer from '../_gamer/gamer.js'
-import animations from '../asset/Red_Mage/red-mage.js'
+import animations from '../asset/red-mage/red-mage.js'
 
 const sprite = gamer.sprite(1000, 25, 300, 300)
 console.log(animations)

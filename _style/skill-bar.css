@@ -1,0 +1,39 @@
+.skillbar{
+  display: flex;
+  bottom: 15px;
+  left: 15px;
+}
+
+.skillbar button{
+  position: relative;
+  border: none;
+  padding: 0;
+  margin: 0 8px;
+  width: 64px;
+  height: 64px;
+  background: black;
+  cursor: pointer;
+}
+
+.skillbar img{
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  margin: 0;
+  transition: .3s;
+}
+
+.skillbar button:active img{
+  opacity: 0.6;
+}
+
+.skillbar button label{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-weight: bold;
+  padding: 3px 6px;
+  border-top-left-radius: 9px;
+}

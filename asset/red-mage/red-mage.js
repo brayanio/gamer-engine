@@ -13,7 +13,7 @@ let animations = []
     let imgs = []
     for(let i = 0; i <= animation[1]; i++){
         let index = (i < 10) ? `0${i}` : i
-        imgs.push(`./asset/Red_Mage/${animation[0]}/${animation[0]}_0${index}.png`)
+        imgs.push(`./asset/red-mage/${animation[0]}/${animation[0]}_0${index}.png`)
     }
     animations.push([animation[0], ...imgs])
 })
