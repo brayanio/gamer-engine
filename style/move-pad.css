@@ -1,0 +1,38 @@
+.movepad{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  bottom: 0;
+  right: 0;
+}
+
+.movepad > .top{
+  display: flex;
+  justify-content: center;
+}
+
+.movepad > .bottom{
+  display: flex;
+  justify-content: center;
+}
+
+.movepad button{
+  width: 100px;
+  padding: 9px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-weight: bold;
+  border: 2px solid rgba(0,0,0,0.3);
+  margin: 3px;
+  border-radius: 9px;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: .3s;
+}
+
+.movepad button:active{
+  background: rgba(0,0,0,0);
+  box-shadow: 0 3px 5px rgba(0,0,0,0);
+  border: 2px solid rgba(0,0,0,0.3);
+}
