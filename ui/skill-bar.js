@@ -10,6 +10,7 @@ export default gamer.ui( 'skillbar', null,
       const label = document.createElement('label')
       label.innerText = skill.key
       button.appendChild(label)
+      gamer.addKeyFn(skill.key, () => button.click())
       el.appendChild(button)
     })
 )

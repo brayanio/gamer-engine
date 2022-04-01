@@ -130,6 +130,7 @@ const sprite = () => {
     }
   }
   const trackUI = (tag) => {
+    if(el) canvas.ui.removeChild(el)
     el = document.createElement(tag)
     if(tag === 'button') el.classList.add('ui-btn')
     updateUI()
@@ -144,6 +145,10 @@ const sprite = () => {
     }
   }
   const getUI = () => el
+  const clearUI = () => {
+    canvas.ui.removeChild(el)
+    el = undefined
+  }
 
   return {
     // properties
@@ -153,7 +158,7 @@ const sprite = () => {
     postRender, move, flip, getBounds, checkBounds,
     setOutline, addBehavior, removeBehavior,
     setBounds, setPosition, setSize,
-    trackUI, updateUI, getUI
+    trackUI, updateUI, getUI, clearUI
   }
 }
 

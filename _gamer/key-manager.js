@@ -6,19 +6,30 @@ let key = {
   down: false
 }
 
+let keyObj = {}
+
+const addKeyFn = (key, fn) => keyObj[key] = fn
+const removeKeyFn = key => delete keyObj[key]
+
 const startKeyListener = () => {
   onkeydown = event => {
     if(event.key === CONSTANT.MOVEMENT_KEY.LEFT) 
       key.left = true
-    if(event.key === CONSTANT.MOVEMENT_KEY.RIGHT) 
+    else if(event.key === CONSTANT.MOVEMENT_KEY.RIGHT) 
       key.right = true
-    if(event.key === CONSTANT.MOVEMENT_KEY.UP) 
+    else if(event.key === CONSTANT.MOVEMENT_KEY.UP) 
       key.up = true
-    if(event.key === CONSTANT.MOVEMENT_KEY.DOWN) 
+    else if(event.key === CONSTANT.MOVEMENT_KEY.DOWN) 
       key.down = true
+    else if(event.key === CONSTANT.MOVEMENT_KEY.DOWN) 
+      key.down = true
+    else 
+      Object.keys(keyObj).forEach(key => {
+        if(event.key === key) keyObj[key]()
+      })
   }
   
-  onkeyup = e => {
+  onkeyup = event => {
     if(event.key === CONSTANT.MOVEMENT_KEY.LEFT) 
       key.left = false
     if(event.key === CONSTANT.MOVEMENT_KEY.RIGHT) 
@@ -36,4 +47,4 @@ const isMoveActive = () => (key.up || key.down || key.left || key.right)
 const getKey = () => key
 const setKeyState = (k, state) => key[k] = state
 
-export default { startKeyListener, getKey, setKeyState, isMoveActive }
+export default { startKeyListener, getKey, setKeyState, isMoveActive, addKeyFn, removeKeyFn }
