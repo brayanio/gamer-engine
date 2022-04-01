@@ -1,4 +1,5 @@
 import CONSTANT from '../constant.js'
+import canvas from './canvas.js'
 
 const sprite = () => {
   let animations = {}
@@ -90,14 +91,17 @@ const sprite = () => {
     bounds.y = y
     bounds.width = width
     bounds.height = height
+    updateUI()
   }
   const setPosition = (x, y) => {
     bounds.x = x
     bounds.y = y
+    updateUI()
   }
   const setSize = (width, height) => {
     bounds.width = width
     bounds.height = height
+    updateUI()
   }
   const getBounds = () => bounds
 
@@ -112,10 +116,35 @@ const sprite = () => {
       bounds.x = maxX - bounds.width
     if(bounds.y + bounds.height > maxY)
       bounds.y = maxY - bounds.height
+    updateUI()
   }
 
   const setOutline = b => outline = b
   
+  let el
+  const scale = (x, y) => {
+    const screenBounds = canvas.canvas.getBoundingClientRect()
+    return {
+      x: x * (screenBounds.width / CONSTANT.RESOLUTION[0]),
+      y: y * (screenBounds.height / CONSTANT.RESOLUTION[1]),
+    }
+  }
+  const trackUI = (tag) => {
+    el = document.createElement(tag)
+    if(tag === 'button') el.classList.add('ui-btn')
+    updateUI()
+    canvas.ui.appendChild(el)
+  }
+  const updateUI = () => {
+    if(el){
+      el.style.top = scale(0, bounds.y).y + 'px'
+      el.style.left = scale(bounds.x, 0).x + 'px'
+      el.style.width = scale(bounds.width, 0).x + 'px'
+      el.style.height = scale(0, bounds.height).y + 'px'
+    }
+  }
+  const getUI = () => el
+
   return {
     // properties
     animations, currentAnimation, index,
@@ -123,7 +152,8 @@ const sprite = () => {
     setAnimation, addAnimation, load, render,
     postRender, move, flip, getBounds, checkBounds,
     setOutline, addBehavior, removeBehavior,
-    setBounds, setPosition, setSize
+    setBounds, setPosition, setSize,
+    trackUI, updateUI, getUI
   }
 }
 

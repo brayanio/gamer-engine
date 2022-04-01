@@ -1,5 +1,5 @@
-export default (name) => {
-  let behaviorObj = {}
+export default (name, initObj) => {
+  let behaviorObj = {...initObj}
 
   const attach = sprite => {
     sprite.addBehavior(name, () => detatch(sprite))

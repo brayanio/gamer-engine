@@ -98,6 +98,7 @@ const clear = () => {
 
 export default { 
   ui,
+  canvas,
   getUI,
   getAllUI,
   ctx,
