@@ -104,6 +104,14 @@ const sprite = () => {
     updateUI()
   }
   const getBounds = () => bounds
+  const getSize = () => { return { width: bounds.width, height: bounds.height } }
+  const getPosition = () => { return { x: bounds.x, y: bounds.y } }
+  const getCenter = () => {
+    return {
+      x: bounds.x + (bounds.width / 2),
+      y: bounds.y + (bounds.height / 2)
+    }
+  }
 
   const checkBounds = () => {
     const maxX = CONSTANT.RESOLUTION[0]
@@ -157,8 +165,9 @@ const sprite = () => {
     setAnimation, addAnimation, load, render,
     postRender, move, flip, getBounds, checkBounds,
     setOutline, addBehavior, removeBehavior,
-    setBounds, setPosition, setSize,
-    trackUI, updateUI, getUI, clearUI
+    setBounds, setPosition, setSize, getCenter,
+    trackUI, updateUI, getUI, clearUI,
+    getSize, getPosition
   }
 }
 

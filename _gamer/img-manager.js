@@ -5,11 +5,9 @@ let expected = 0
 let loading = 0
 let onImgLoadFN, onSceneLoadFN
 
-const checkImgLoaded = src => imgManager.querySelector(`[src="${src}"]`)
-
 const loadImg = (...srcArray) => {
   loadScreen(onImgLoad)
-  const filteredSrcArray = srcArray.filter(src => !checkImgLoaded(src))
+  const filteredSrcArray = [...new Set(srcArray)]
   expected += filteredSrcArray.length
   filteredSrcArray.forEach(src => {
     const img = document.createElement('img')
