@@ -9,6 +9,7 @@ const sprite = () => {
   let flipped = false
   let outline = false
   let behaviors = {}
+  let loop = false
 
   const flip = isFlip => {
     if(isFlip !== undefined)
@@ -16,13 +17,15 @@ const sprite = () => {
     else flipped = !flipped
   }
   
-  const setAnimation = (name, priority = 0, reset) => {
-    if(priority >= animationPriority)
+  const setAnimation = (name, priority = 0, loop, reset) => {
+    if(priority >= animationPriority){
+      loop = loop || false
       if(currentAnimation !== name || reset){
         currentAnimation = name
         animationPriority = priority
         index = 0
       }
+    }
   }
 
   const addAnimation = (name, ...srcAr) => {

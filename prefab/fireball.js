@@ -8,7 +8,7 @@ export default gamer.prefab(
     sprite.setAnimation('Idle')
     sprite.setOutline(true)
     behaviorProjectile.attach( sprite )
-    sprite.setSpeed(30)
+    sprite.setSpeed(20)
   },
   ...animations
 )
