@@ -15,6 +15,7 @@ export default (init) => {
 
     const addSprite = (...sprite) => {
       sprites.push(...sprite)
+      sprite.forEach(s => s.setScene(exportable))
     }
   
     const removeSprite = sprite => {

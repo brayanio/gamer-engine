@@ -113,6 +113,17 @@ const sprite = () => {
     }
   }
 
+  const isTouching = bounds => {
+    if(bounds.getBounds) bounds = bounds.getBounds()
+    let a = getBounds(), b = bounds
+    return !(
+        ((a.y + a.height) < (b.y)) ||
+        (a.y > (b.y + b.height)) ||
+        ((a.x + a.width) < b.x) ||
+        (a.x > (b.x + b.width))
+    )
+  }
+
   const checkBounds = () => {
     const maxX = CONSTANT.RESOLUTION[0]
     const maxY = CONSTANT.RESOLUTION[1]
@@ -158,7 +169,14 @@ const sprite = () => {
     el = undefined
   }
 
-  return {
+  let scene
+  const setScene = s => scene = s
+  const destroy = () => {
+    if(scene)
+      scene.removeSprite(exportable)
+  }
+
+  const exportable = {
     // properties
     animations, currentAnimation, index,
     // functions
@@ -167,8 +185,10 @@ const sprite = () => {
     setOutline, addBehavior, removeBehavior,
     setBounds, setPosition, setSize, getCenter,
     trackUI, updateUI, getUI, clearUI,
-    getSize, getPosition
+    getSize, getPosition, isTouching, setScene, destroy
   }
+
+  return exportable
 }
 
 export default sprite
