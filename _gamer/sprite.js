@@ -108,8 +108,11 @@ const sprite = () => {
 
   const postRender = () => {
     index++
-    if(index >= animations[currentAnimation].length )
+    if(index >= animations[currentAnimation].length ){
       index = 0
+      if(!loop)
+        animationPriority = 0
+    }
     sprites.forEach(sprite => sprite.postRender())
   }
 

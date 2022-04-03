@@ -34,6 +34,7 @@ export default gamer.scene( scene => {
       enemy.getUI('target-select').focus()
       enemy.getUI('target-select').onclick = () => {
         enemy.clearUI('target-select')
+        player.setAnimation('Attacking', 2, false, true)
         const projectile = player.castFireball( scene, enemy )
         projectiles.push( projectile )
         projectile.onProjectileHit( target => {
