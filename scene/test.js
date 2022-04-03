@@ -30,12 +30,16 @@ export default gamer.scene( scene => {
   uiSkillbar(
     {img: 'magicianSkill3', key: '1', fn: () => {
       enemy.trackUI('target-select', 'button')
-      enemy.getUI('target-select').style.background = 'rgba(255, 0, 0, .1)'
+      enemy.getUI('target-select').classList.add('target-select')
+      enemy.getUI('target-select').focus()
       enemy.getUI('target-select').onclick = () => {
         enemy.clearUI('target-select')
-        projectiles.push( 
-          player.castFireball( scene, enemy ) 
-        )
+        const projectile = player.castFireball( scene, enemy )
+        projectiles.push( projectile )
+        projectile.onProjectileHit( target => {
+          target.changeHealth( -5 )
+          projectiles = projectiles.filter( p => p !== projectile )
+        })
       }
     }},
     {img: 'magicianSkill1', key: '2', fn: () => {

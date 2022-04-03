@@ -1,0 +1,9 @@
+.target-select{
+  background: rgba(255, 0, 0, .1);
+  border-radius: 100%;
+}
+
+.target-select:focus{
+  outline: none;
+  border: 6px solid rgb(255, 0, 0);
+}

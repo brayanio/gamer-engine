@@ -32,7 +32,7 @@ export default gamer.behavior(
       if(sprite.target){
         sprite.move(...sprite.projectileSpeed)
         if(sprite.isTouching( sprite.target )){
-          sprite.projectileHitFN()
+          sprite.projectileHitFN( sprite.target )
           sprite.destroy()
         }
       }

@@ -17,8 +17,9 @@ export default gamer.behavior(
     },
     updateBar: (sprite, value, max) => {
       const b = sprite.getBounds()
+      const w = Math.round(b.width * (value / max))
       sprite.bar.setSize(
-        Math.round(b.width * (value / max)),
+        w < 0 ? 0 : w,
         b.height
       )
     }
