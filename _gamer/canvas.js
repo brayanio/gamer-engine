@@ -97,7 +97,7 @@ const clear = () => {
 }
 
 export default { 
-  ui,
+  uiLayer: ui,
   canvas,
   getUI,
   getAllUI,

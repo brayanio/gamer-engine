@@ -6,10 +6,13 @@ const sprite = () => {
   let index = 0, animationPriority = 0
   let currentAnimation
   let bounds = {x: 0, y: 0, width: 0, height: 0}
+  let offset = {x: 0, y: 0}
   let flipped = false
   let outline = false
   let behaviors = {}
   let loop = false
+
+  // animation
 
   const flip = isFlip => {
     if(isFlip !== undefined)
@@ -33,6 +36,8 @@ const sprite = () => {
     if( !currentAnimation ) currentAnimation = name
   }
 
+  // behavior
+
   const addBehavior = (name, detatch) => behaviors[name] = detatch
   const removeBehavior = name => {
     if(behaviors[name]){
@@ -41,10 +46,31 @@ const sprite = () => {
     }
   }
 
+  // sprites
+
+  let sprites = []
+  const addSprite = sprite => {
+    sprites.push(sprite)
+    sprite.setParent( exportable )
+    sprite.setOffset(
+      sprite.getBounds().x - (bounds.x + offset.x),
+      sprite.getBounds().y - (bounds.y + offset.y),
+    )
+    updateSpriteBounds()
+  }
+  const removeSprite = sprite => {
+    sprites = sprites.filter(s => s !== sprite)
+  }
+
+  // engine
+
   const load = engine => {
     Object.values(animations).forEach(imgArray =>
       engine.loadImg( ...imgArray )
     )
+    sprites.forEach(sprite => {
+      sprite.load( engine )
+    })
   }
 
   const render = engine => {
@@ -75,18 +101,45 @@ const sprite = () => {
         bounds.height
       )
     }
+    sprites.forEach(sprite => {
+      sprite.render( engine )
+    })
   }
 
   const postRender = () => {
     index++
     if(index >= animations[currentAnimation].length )
       index = 0
+    sprites.forEach(sprite => sprite.postRender())
+  }
+
+  // bounds
+
+  const updateSpriteBounds = () => {
+    sprites.forEach(sprite => {
+      sprite.setPosition(
+        bounds.x + offset.x + sprite.offset.x,
+        bounds.y + offset.y + sprite.offset.y
+      )
+    })
   }
 
   const move = (x, y) => {
     bounds.x += x
     bounds.y += y
+    updateSpriteBounds()
     checkBounds()
+  }
+
+  const setOffset = (x, y) => {
+    offset.x = x
+    offset.y = y
+    sprites.forEach(sprite => {
+      sprite.offset.x -= x
+      sprite.offset.y -= y
+    })
+    updateSpriteBounds()
+    updateUI()
   }
 
   const setBounds = (x, y, width, height) => {
@@ -94,16 +147,19 @@ const sprite = () => {
     bounds.y = y
     bounds.width = width
     bounds.height = height
+    updateSpriteBounds()
     updateUI()
   }
   const setPosition = (x, y) => {
     bounds.x = x
     bounds.y = y
+    updateSpriteBounds()
     updateUI()
   }
   const setSize = (width, height) => {
     bounds.width = width
     bounds.height = height
+    updateSpriteBounds()
     updateUI()
   }
   const getBounds = () => bounds
@@ -138,12 +194,17 @@ const sprite = () => {
       bounds.x = maxX - bounds.width
     if(bounds.y + bounds.height > maxY)
       bounds.y = maxY - bounds.height
+    updateSpriteBounds()
     updateUI()
   }
 
+  // util
+
   const setOutline = b => outline = b
   
-  let el
+  // ui
+
+  let elements = {}
   const scale = (x, y) => {
     const screenBounds = canvas.canvas.getBoundingClientRect()
     return {
@@ -151,44 +212,68 @@ const sprite = () => {
       y: y * (screenBounds.height / CONSTANT.RESOLUTION[1]),
     }
   }
-  const trackUI = (tag) => {
-    if(el) canvas.ui.removeChild(el)
-    el = document.createElement(tag)
-    if(tag === 'button') el.classList.add('ui-btn')
-    updateUI()
-    canvas.ui.appendChild(el)
-  }
-  const updateUI = () => {
-    if(el){
-      el.style.top = scale(0, bounds.y).y + 'px'
-      el.style.left = scale(bounds.x, 0).x + 'px'
-      el.style.width = scale(bounds.width, 0).x + 'px'
-      el.style.height = scale(0, bounds.height).y + 'px'
+  const trackUI = (id, tag, offset) => {
+    if(!elements[id]){
+      const el = document.createElement(tag)
+      el.id = id
+      if(tag === 'button') el.classList.add('ui-btn')
+      if(offset){
+        el.setAttribute('offset-x', offset.x)
+        el.setAttribute('offset-y', offset.y)
+        el.setAttribute('offset-width', offset.width)
+        el.setAttribute('offset-height', offset.height)
+      }
+      elements[id] = el
+      updateUI()
+      canvas.uiLayer.appendChild(el)
+      return el
     }
   }
-  const getUI = () => el
-  const clearUI = () => {
-    canvas.ui.removeChild(el)
-    el = undefined
+  const updateUI = () => {
+    Object.values(elements).forEach(el => {
+      const offset = {
+        x: (el.getAttribute('offset-x') || 0),
+        y: (el.getAttribute('offset-y') || 0),
+        width: (el.getAttribute('offset-width') || 0),
+        height: (el.getAttribute('offset-height') || 0)
+      }
+      el.style.top = scale(0, bounds.y + offset.y).y + 'px'
+      el.style.left = scale(bounds.x + offset.x, 0).x + 'px'
+      el.style.width = scale(bounds.width + offset.width, 0).x + 'px'
+      el.style.height = scale(0, bounds.height + offset.height).y + 'px'
+    })
+  }
+  const getUI = id => elements[id]
+  const clearUI = (...id) => {
+    if(!id.length) id = Object.keys(elements)
+    id.forEach(id => {
+      let el = elements[id]
+      if(el) {
+        canvas.uiLayer.removeChild(el)
+        delete elements[id]
+      }
+    })
   }
 
-  let scene
-  const setScene = s => scene = s
+  // scene
+
+  let parent
+  const setParent = p => parent = p
   const destroy = () => {
-    if(scene)
-      scene.removeSprite(exportable)
+    if(parent && parent.removeSprite) parent.removeSprite(exportable)
   }
 
   const exportable = {
     // properties
-    animations, currentAnimation, index,
+    animations, currentAnimation, index, offset,
     // functions
     setAnimation, addAnimation, load, render,
     postRender, move, flip, getBounds, checkBounds,
     setOutline, addBehavior, removeBehavior,
     setBounds, setPosition, setSize, getCenter,
     trackUI, updateUI, getUI, clearUI,
-    getSize, getPosition, isTouching, setScene, destroy
+    getSize, getPosition, isTouching, setParent, destroy,
+    addSprite, removeSprite, setOffset
   }
 
   return exportable

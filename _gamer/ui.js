@@ -5,7 +5,7 @@ export default (className, innerHTML, init) => {
   el.classList.add(className)
   if(innerHTML !== null) el.innerHTML = innerHTML || `${innerHTML}`
   return (...props) => {
-    canvas.ui.appendChild(el)
+    canvas.uiLayer.appendChild(el)
     if(init) init(el, ...props)
   }
 }

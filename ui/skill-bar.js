@@ -5,7 +5,7 @@ export default gamer.ui( 'skillbar', null,
       const button = document.createElement('button')
       button.onclick = skill.fn
       const img = document.createElement('img')
-      img.src = skill.img
+      img.src = `./asset/skill/${skill.img}.png`
       button.appendChild(img)
       const label = document.createElement('label')
       label.innerText = skill.key

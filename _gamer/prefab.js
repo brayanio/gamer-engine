@@ -6,8 +6,8 @@ export default (name, fn, ...animations) => {
     animations.forEach(animation => 
       sprite.addAnimation(...animation)
     )
-    fn(sprite)
     if(bounds.length) sprite.setBounds(...bounds)
+    fn(sprite)
     return sprite
   }
   return { name, sprite, animations }

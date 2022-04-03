@@ -1,5 +1,8 @@
-export default (name, initObj) => {
+export default (name, initObj, ...extend) => {
   let behaviorObj = {...initObj}
+  extend.forEach(b =>
+    behaviorObj = Object.assign(behaviorObj, b.extend())
+  )
 
   const attach = sprite => {
     sprite.addBehavior(name, () => detatch(sprite))
@@ -24,6 +27,6 @@ export default (name, initObj) => {
   }
 
   return {
-    add, attach
+    add, attach, extend: () => initObj
   }
 }

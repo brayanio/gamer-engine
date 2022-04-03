@@ -15,17 +15,19 @@ export default (init) => {
 
     const addSprite = (...sprite) => {
       sprites.push(...sprite)
-      sprite.forEach(s => s.setScene(exportable))
+      sprite.forEach(s => s.setParent(exportable))
     }
   
     const removeSprite = sprite => {
       sprites = sprites.filter(s => s !== sprite)
     }
 
-    const spawn = (name, ...bounds) => {
+    const spawn = (name, x, y, width, height, parent) => {
       if(prefabs[name]){
-        const sprite = prefabs[name].sprite(...bounds)
-        addSprite(sprite)
+        const sprite = prefabs[name].sprite(x, y, width, height)
+        sprites.push(sprite)
+        if(!parent) sprite.setParent( exportable )
+        else sprite.setParent( parent )
         return sprite
       } else console.error(`No prefab named "${name}" has been added to the scene.`)
     }
