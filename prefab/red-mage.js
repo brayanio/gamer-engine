@@ -12,10 +12,10 @@ export default gamer.prefab(
     
     const b = sprite.getBounds()
     const healthBar = prefabProgress.sprite( 
-      b.x,
-      b.y - 100,
-      b.width,
-      75
+      b.x + (b.width / 4),
+      b.y - 25,
+      b.width / 2,
+      33
     )
     sprite.addSprite( healthBar )
 

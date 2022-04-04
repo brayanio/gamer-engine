@@ -38,7 +38,7 @@ export default gamer.scene( scene => {
         const projectile = player.castFireball( scene, enemy )
         projectiles.push( projectile )
         projectile.onProjectileHit( target => {
-          target.changeHealth( -5 )
+          target.changeHealth( -3 )
           projectiles = projectiles.filter( p => p !== projectile )
         })
       }
