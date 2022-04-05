@@ -52,7 +52,7 @@ export default (init) => {
     }
   
     const postRender = () => {
-      if(postRenderFN) preRenderFN()
+      if(postRenderFN) postRenderFN()
       sprites.forEach(sprite => sprite.postRender())
     }
   

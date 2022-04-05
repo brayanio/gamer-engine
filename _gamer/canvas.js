@@ -1,25 +1,22 @@
-import CONSTANT from '../constant.js'
 import imgManager from './img-manager.js'
 import keyManager from './key-manager.js'
 
-let canvas, ctx, ui
-
-canvas = document.createElement('canvas')
-canvas.setAttribute('width', CONSTANT.RESOLUTION[0])
-canvas.setAttribute('height', CONSTANT.RESOLUTION[1])
-ctx = canvas.getContext("2d")
+let canvas, ctx, ui, constant
 
 ui = document.createElement('div')
 ui.classList.add('ui')
 
-const getUI = (id, isSelector) => {
-  let search = isSelector ? id : `#${id}`
-  return ui.querySelector(search)
-}
-const getAllUI = selector => ui.querySelectorAll(selector)
+const getCanvas = () => canvas
+const getCtx = () => ctx
+const getUI = () => ui
+const CONSTANT = () => constant
 
-const setup = () => {
-  document.body.appendChild(canvas)
+const setup = (canvasElement, constants) => {
+  canvas = canvasElement
+  constant = constants
+  canvas.setAttribute('width', constant.RESOLUTION[0])
+  canvas.setAttribute('height', constant.RESOLUTION[1])
+  ctx = canvas.getContext("2d")
   document.body.appendChild(ui)
   keyManager.startKeyListener()
 }
@@ -57,15 +54,15 @@ const inReverse = fn => {
   ctx.restore()
 }
 
-let isRenderLoopOn = false
+let renderFN, isRendering = false
 
 const onRenderLoop = fn => {
-  isRenderLoopOn = true
+  renderFN = fn
   const render = () => {
-    if(isRenderLoopOn){
-      const framerate = 1000 / CONSTANT.FRAMES_PER_SECOND
+    if(renderFN){
+      const framerate = 1000 / constant.FRAMES_PER_SECOND
       const delta = Date.now()
-      fn()
+      renderFN()
       const deltaTime = Date.now() - delta
       if ((deltaTime >= framerate)) 
           requestAnimationFrame(render)
@@ -73,12 +70,22 @@ const onRenderLoop = fn => {
         () => requestAnimationFrame(render), 
         framerate - deltaTime
       )
-    }
+    } else isRendering = false
   }
-  render()
+  if(!isRendering) {
+    isRendering = true
+    render()
+  }
+}
+
+const clearUI = () => {
+  while(ui.lastChild)
+  ui.removeChild(ui.lastChild)
 }
 
 const openScene = (scene) => {
+  imgManager.switchScene( scene )
+  imgManager.clearImgManager()
   imgManager.onSceneLoad(() => {
     onRenderLoop(() => {
       clear()
@@ -90,18 +97,20 @@ const openScene = (scene) => {
   scene.load({...imgManager})
 }
 
-const closeScene = () => isRenderLoopOn = false
-
-const clear = () => {
-  ctx.clearRect(0, 0, CONSTANT.RESOLUTION[0], CONSTANT.RESOLUTION[1])
+const closeScene = () => {
+  renderFN = undefined
+  clearUI()
+  keyManager.clearKeyFn()
 }
 
-export default { 
-  uiLayer: ui,
-  canvas,
+const clear = () => 
+  ctx.clearRect(0, 0, constant.RESOLUTION[0], constant.RESOLUTION[1])
+
+export default {
+  getCanvas,
   getUI,
-  getAllUI,
-  ctx,
+  getCtx,
+  CONSTANT,
   setup, 
   drawLine, 
   drawOutline, 

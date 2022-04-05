@@ -1,4 +1,3 @@
-import CONSTANT from '../constant.js'
 import canvas from './canvas.js'
 
 const sprite = () => {
@@ -187,6 +186,7 @@ const sprite = () => {
   }
 
   const checkBounds = () => {
+    const CONSTANT = canvas.CONSTANT()
     const maxX = CONSTANT.RESOLUTION[0]
     const maxY = CONSTANT.RESOLUTION[1]
     if(bounds.x < 0)
@@ -209,7 +209,8 @@ const sprite = () => {
 
   let elements = {}
   const scale = (x, y) => {
-    const screenBounds = canvas.canvas.getBoundingClientRect()
+    const CONSTANT = canvas.CONSTANT()
+    const screenBounds = canvas.getCanvas().getBoundingClientRect()
     return {
       x: x * (screenBounds.width / CONSTANT.RESOLUTION[0]),
       y: y * (screenBounds.height / CONSTANT.RESOLUTION[1]),
@@ -228,7 +229,7 @@ const sprite = () => {
       }
       elements[id] = el
       updateUI()
-      canvas.uiLayer.appendChild(el)
+      canvas.getUI().appendChild(el)
       return el
     }
   }
@@ -252,7 +253,7 @@ const sprite = () => {
     id.forEach(id => {
       let el = elements[id]
       if(el) {
-        canvas.uiLayer.removeChild(el)
+        canvas.getUI().removeChild(el)
         delete elements[id]
       }
     })
@@ -262,8 +263,10 @@ const sprite = () => {
 
   let parent
   const setParent = p => parent = p
+  const getParent = () => parent
   const destroy = () => {
     if(parent && parent.removeSprite) parent.removeSprite(exportable)
+    parent = undefined
   }
 
   const exportable = {
@@ -276,7 +279,7 @@ const sprite = () => {
     setBounds, setPosition, setSize, getCenter,
     trackUI, updateUI, getUI, clearUI,
     getSize, getPosition, isTouching, setParent, destroy,
-    addSprite, removeSprite, setOffset
+    addSprite, removeSprite, setOffset, getParent
   }
 
   return exportable

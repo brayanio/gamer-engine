@@ -1,4 +1,5 @@
-import CONSTANT from '../constant.js'
+import canvas from './canvas.js'
+
 let key = {
   left: false, 
   right: false, 
@@ -10,8 +11,10 @@ let keyObj = {}
 
 const addKeyFn = (key, fn) => keyObj[key] = fn
 const removeKeyFn = key => delete keyObj[key]
+const clearKeyFn = () => keyObj = {}
 
 const startKeyListener = () => {
+  const CONSTANT = canvas.CONSTANT()
   onkeydown = event => {
     if(event.key === CONSTANT.MOVEMENT_KEY.LEFT) 
       key.left = true
@@ -30,6 +33,7 @@ const startKeyListener = () => {
   }
   
   onkeyup = event => {
+    const CONSTANT = canvas.CONSTANT()
     if(event.key === CONSTANT.MOVEMENT_KEY.LEFT) 
       key.left = false
     if(event.key === CONSTANT.MOVEMENT_KEY.RIGHT) 
@@ -41,10 +45,13 @@ const startKeyListener = () => {
   }
 }
 
-
 const isMoveActive = () => (key.up || key.down || key.left || key.right)
 
 const getKey = () => key
 const setKeyState = (k, state) => key[k] = state
 
-export default { startKeyListener, getKey, setKeyState, isMoveActive, addKeyFn, removeKeyFn }
+export default { 
+  startKeyListener, getKey, setKeyState, 
+  isMoveActive, addKeyFn, removeKeyFn, 
+  clearKeyFn 
+}

@@ -1,14 +1,14 @@
-import gamer from "./gamer.js"
+import sprite from "./sprite.js"
 
 export default (name, fn, ...animations) => {
-  const sprite = (...bounds) => {
-    const sprite = gamer.sprite()
+  const newSprite = (...bounds) => {
+    const spriteObj = sprite()
     animations.forEach(animation => 
-      sprite.addAnimation(...animation)
+      spriteObj.addAnimation(...animation)
     )
-    if(bounds.length) sprite.setBounds(...bounds)
-    fn(sprite)
-    return sprite
+    if(bounds.length) spriteObj.setBounds(...bounds)
+    fn(spriteObj)
+    return spriteObj
   }
-  return { name, sprite, animations }
+  return { name, sprite: newSprite, animations }
 }

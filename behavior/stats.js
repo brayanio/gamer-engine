@@ -16,11 +16,11 @@ export default gamer.behavior(
     },
     changeHealth: (sprite, v) => {
       sprite.health += v
-      sprite.healthChangeFN()
+      sprite.healthChangeFN(sprite.health, sprite.maxHealth)
     },
     setHealth: (sprite, v) => {
       sprite.health = v
-      sprite.healthChangeFN()
+      sprite.healthChangeFN(sprite.health, sprite.maxHealth)
     }
   }
 )

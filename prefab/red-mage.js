@@ -2,6 +2,7 @@ import gamer from '../_gamer/gamer.js'
 import animations from '../asset/red-mage/red-mage.js'
 import prefabProgress from './progress.js'
 import behaviorStats from '../behavior/stats.js'
+import behaviorTargetable from '../behavior/targetable.js'
 
 export default gamer.prefab(
   'red-mage',
@@ -21,9 +22,11 @@ export default gamer.prefab(
 
     behaviorStats.attach( sprite )
     sprite.initStats(100)
-    sprite.onHealthChange(() => 
-      healthBar.updateBar(sprite.health, sprite.maxHealth)
+    sprite.onHealthChange((hp, mhp) => 
+      healthBar.updateBar( hp, mhp )
     )
+
+    behaviorTargetable.attach( sprite )
 
   },
   ...animations

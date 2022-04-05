@@ -7,7 +7,7 @@ export default gamer.prefab(
   'green-mage',
   sprite => {
     sprite.setAnimation('Idle')
-    // sprite.setOutline(true)
+    sprite.setOutline(true)
 
     const b = sprite.getBounds()
     const healthBar = prefabProgress.sprite( 

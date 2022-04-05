@@ -9,6 +9,7 @@ let animations = []
       imgs.push(`./asset/fireball/fireball_${i}.png`)
       imgs.push(`./asset/fireball/fireball_${i}.png`)
       imgs.push(`./asset/fireball/fireball_${i}.png`)
+      imgs.push(`./asset/fireball/fireball_${i}.png`)
     }
     animations.push([animation[0], ...imgs])
 })

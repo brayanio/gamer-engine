@@ -17,6 +17,7 @@ const loadImg = (...srcArray) => {
       onImgLoadFN(loading, expected, loading / expected)
       if(loading === expected){
         onSceneLoadFN()
+        onSceneLoadFN = undefined
         expected = 0
         loading = 0
       }
@@ -28,6 +29,18 @@ const loadImg = (...srcArray) => {
 const unloadImg = src => {
   Array.from( imgManager.querySelectorAll(`[src="${src}"]`) )
     .forEach(el => imgManager.removeChild(el))
+}
+
+const clearImgManager = () => {
+  Array.from( imgManager.querySelectorAll(`:not([gamer-keep])`) )
+    .forEach( el => imgManager.removeChild( el ))
+}
+
+const switchScene = (...srcArray) => {
+  srcArray.forEach(src => {
+    let el = imgManager.querySelector(`[src="${src}"]`)
+    if(el) el.addAttribute('gamer-keep', true)
+  })
 }
 
 const onSceneLoad = fn => {
@@ -46,5 +59,5 @@ const progressObj = () => {
 export default { 
   el: imgManager, unloadImg, loadImg, 
   onSceneLoad, progress, progressObj, 
-  onImgLoad
+  onImgLoad, clearImgManager, switchScene
 }
