@@ -12,9 +12,9 @@ export default gamer.ui( 'movepad',
     </div>
   `,
   () => ['up', 'left', 'right', 'down'].forEach( key => {
-    gamer.getUI(key).onmousedown = () => gamer.setKeyState(key, true)
-    gamer.getUI(key).onmouseup = () => gamer.setKeyState(key, false)
-    gamer.getUI(key).ontouchstart = () => gamer.setKeyState(key, true)
-    gamer.getUI(key).ontouchend = () => gamer.setKeyState(key, false)
+    gamer.getId(key).onmousedown = () => gamer.setKeyState(key, true)
+    gamer.getId(key).onmouseup = () => gamer.setKeyState(key, false)
+    gamer.getId(key).ontouchstart = () => gamer.setKeyState(key, true)
+    gamer.getId(key).ontouchend = () => gamer.setKeyState(key, false)
   })
 )

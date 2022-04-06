@@ -11,11 +11,14 @@ const getCtx = () => ctx
 const getUI = () => ui
 const CONSTANT = () => constant
 
+const getId = id => ui.querySelector(`#${id}`)
+
 const setup = (canvasElement, constants) => {
   canvas = canvasElement
   constant = constants
   canvas.setAttribute('width', constant.RESOLUTION[0])
   canvas.setAttribute('height', constant.RESOLUTION[1])
+  if(constant.FULLSCREEN) canvas.classList.add('fullscreen')
   ctx = canvas.getContext("2d")
   document.body.appendChild(ui)
   keyManager.startKeyListener()
@@ -110,6 +113,7 @@ export default {
   getCanvas,
   getUI,
   getCtx,
+  getId,
   CONSTANT,
   setup, 
   drawLine, 
