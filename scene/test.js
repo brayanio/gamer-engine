@@ -1,4 +1,4 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 import behaviorMovable from '../behavior/moveable.js'
 import behaviorCastFireball from '../behavior/cast-fireball.js'
 import behaviorCastLightning from '../behavior/cast-lightning.js'
@@ -13,7 +13,7 @@ import uiSkillbar from '../ui/skill-bar.js'
 import uiLogo from '../ui/logo.js'
 import sceneTestTwo from '../scene/test-two.js'
 
-export default gamer.scene( scene => {
+export default gmr.scene( scene => {
   //init prefabs
   scene.addPrefab(
     prefabRedMage,
@@ -68,8 +68,8 @@ export default gamer.scene( scene => {
 
   scene.onPostRender(() => {
     if( player.isTouching( doorTestTwo ) ) {
-      gamer.closeScene()
-      gamer.openScene( sceneTestTwo() )
+      gmr.closeScene()
+      gmr.openScene( sceneTestTwo() )
     }
   })
 

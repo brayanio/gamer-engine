@@ -1,3 +1,6 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 
-export default gamer.ui( 'logo', '<img src="./asset/logo-gamer.PNG" width="64px" height="64px"  >' )
+export default gmr.createUI( 
+  'logo', 
+  '<img src="./asset/logo-gamer.PNG" width="64px" height="64px">' 
+)

@@ -1,4 +1,4 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 import behaviorMovable from '../behavior/moveable.js'
 import prefabDoor from '../prefab/door.js'
 import prefabGreenMage from '../prefab/green-mage.js'
@@ -6,7 +6,7 @@ import uiMovepad from '../ui/move-pad.js'
 import uiLogo from '../ui/logo.js'
 import sceneTest from '../scene/test.js'
 
-export default gamer.scene( scene => {
+export default gmr.scene( scene => {
   //init prefabs
   scene.addPrefab(
     prefabDoor,
@@ -30,8 +30,8 @@ export default gamer.scene( scene => {
 
   scene.onPostRender(() => {
     if( player.isTouching( doorTest ) ) {
-      gamer.closeScene()
-      gamer.openScene( sceneTest() )
+      gmr.closeScene()
+      gmr.openScene( sceneTest() )
     }
   })
 })

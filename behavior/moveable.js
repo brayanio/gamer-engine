@@ -1,6 +1,6 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 
-export default gamer.behavior(
+export default gmr.behavior(
   'moveable',
   {
     speed: 12,
@@ -9,21 +9,21 @@ export default gamer.behavior(
     checkUserMovement: sprite => {
       //move
       const speed = sprite.speed
-      if( gamer.getKey().up ) 
+      if( gmr.getKey().up ) 
         sprite.move(0, -speed)
-      if( gamer.getKey().down ) 
+      if( gmr.getKey().down ) 
         sprite.move(0, speed)
-      if( gamer.getKey().left ) {
+      if( gmr.getKey().left ) {
         sprite.move(-speed, 0)
         sprite.flip(true)
       }
-      if( gamer.getKey().right ) {
+      if( gmr.getKey().right ) {
         sprite.move(speed, 0)
         sprite.flip(false)
       }
     
       // set animation
-      if( gamer.isMoveActive() ) 
+      if( gmr.isMoveActive() ) 
         sprite.setAnimation('Walking')
       else 
         sprite.setAnimation('Idle')

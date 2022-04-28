@@ -1,6 +1,6 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 
-export default gamer.prefab(
+export default gmr.prefab(
   'door', 
   sprite => {
     sprite.setOutline(true)

@@ -1,10 +1,10 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 import animations from '../asset/red-mage/red-mage.js'
 import prefabProgress from './progress.js'
 import behaviorStats from '../behavior/stats.js'
 import behaviorTargetable from '../behavior/targetable.js'
 
-export default gamer.prefab(
+export default gmr.prefab(
   'red-mage',
   sprite => {
     sprite.setAnimation('Idle')

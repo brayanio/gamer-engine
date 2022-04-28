@@ -1,7 +1,7 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 
 const emptyfn = () => {}
-export default gamer.behavior(
+export default gmr.behavior(
   'stats',
   {
     maxHealth: 0,

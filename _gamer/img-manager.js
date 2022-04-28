@@ -1,11 +1,16 @@
 import loadScreen from './loading.js'
 
-const imgManager = document.getElementById('imgs')
 let expected = 0
 let loading = 0
 let onImgLoadFN, onSceneLoadFN
 
-const loadImg = (...srcArray) => {
+const createImgManager = () => {
+  const imgManager = document.createElement('div')
+  imgManager.classList.add('gamer-img-manager')
+  return imgManager
+}
+
+const loadImg = (imgManager, ...srcArray) => {
   loadScreen(onImgLoad)
   const filteredSrcArray = [...new Set(srcArray)]
   expected += filteredSrcArray.length
@@ -26,17 +31,17 @@ const loadImg = (...srcArray) => {
   })
 }
 
-const unloadImg = src => {
+const unloadImg = (imgManager, src) => {
   Array.from( imgManager.querySelectorAll(`[src="${src}"]`) )
     .forEach(el => imgManager.removeChild(el))
 }
 
-const clearImgManager = () => {
+const clearImgManager = imgManager => {
   Array.from( imgManager.querySelectorAll(`:not([gamer-keep])`) )
     .forEach( el => imgManager.removeChild( el ))
 }
 
-const switchScene = (...srcArray) => {
+const switchScene = (imgManager, ...srcArray) => {
   srcArray.forEach(src => {
     let el = imgManager.querySelector(`[src="${src}"]`)
     if(el) el.addAttribute('gamer-keep', true)
@@ -57,7 +62,7 @@ const progressObj = () => {
 }
 
 export default { 
-  el: imgManager, unloadImg, loadImg, 
+  createImgManager, unloadImg, loadImg, 
   onSceneLoad, progress, progressObj, 
   onImgLoad, clearImgManager, switchScene
 }

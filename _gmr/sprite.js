@@ -1,6 +1,4 @@
-import canvas from './canvas.js'
-
-export default () => {
+export default (constant, canvas, ui) => {
   let animations = {}
   let index = 0, animationPriority = 0
   let currentAnimation
@@ -120,8 +118,8 @@ export default () => {
   const updateSpriteBounds = () => {
     sprites.forEach(sprite => {
       sprite.setPosition(
-        bounds.x + offset.x + sprite.offset.x,
-        bounds.y + offset.y + sprite.offset.y
+        bounds.x + offset.x + sprite.getOffset().x,
+        bounds.y + offset.y + sprite.getOffset().y
       )
     })
   }
@@ -133,13 +131,15 @@ export default () => {
     checkBounds()
   }
 
+  const getOffset = () => offset
+
   const setOffset = (x, y) => {
     offset.x = x
     offset.y = y
-    sprites.forEach(sprite => {
-      sprite.offset.x -= x
-      sprite.offset.y -= y
-    })
+    sprites.forEach(sprite => sprite.setOffset(
+      sprite.getOffset().x - x,
+      sprite.getOffset().y - y
+    ))
     updateSpriteBounds()
     updateUI()
   }
@@ -186,9 +186,8 @@ export default () => {
   }
 
   const checkBounds = () => {
-    const CONSTANT = canvas.CONSTANT()
-    const maxX = CONSTANT.RESOLUTION[0]
-    const maxY = CONSTANT.RESOLUTION[1]
+    const maxX = constant.RESOLUTION[0]
+    const maxY = constant.RESOLUTION[1]
     if(bounds.x < 0)
       bounds.x = 0
     if(bounds.y < 0)
@@ -209,11 +208,10 @@ export default () => {
 
   let elements = {}
   const scale = (x, y) => {
-    const CONSTANT = canvas.CONSTANT()
-    const screenBounds = canvas.getCanvas().getBoundingClientRect()
+    const screenBounds = canvas.getBoundingClientRect()
     return {
-      x: x * (screenBounds.width / CONSTANT.RESOLUTION[0]),
-      y: y * (screenBounds.height / CONSTANT.RESOLUTION[1]),
+      x: x * (screenBounds.width / constant.RESOLUTION[0]),
+      y: y * (screenBounds.height / constant.RESOLUTION[1]),
     }
   }
   const trackUI = (id, tag, offset) => {
@@ -229,7 +227,7 @@ export default () => {
       }
       elements[id] = el
       updateUI()
-      canvas.getUI().appendChild(el)
+      ui.appendChild(el)
       return el
     }
   }
@@ -253,7 +251,7 @@ export default () => {
     id.forEach(id => {
       let el = elements[id]
       if(el) {
-        canvas.getUI().removeChild(el)
+        ui.removeChild(el)
         delete elements[id]
       }
     })
@@ -270,16 +268,13 @@ export default () => {
   }
 
   const exportable = {
-    // properties
-    animations, currentAnimation, index, offset,
-    // functions
     setAnimation, addAnimation, load, render,
     postRender, move, flip, getBounds, checkBounds,
     setOutline, addBehavior, removeBehavior,
     setBounds, setPosition, setSize, getCenter,
     trackUI, updateUI, getUI, clearUI,
     getSize, getPosition, isTouching, setParent, destroy,
-    addSprite, removeSprite, setOffset, getParent
+    addSprite, removeSprite, setOffset, getParent, getOffset
   }
 
   return exportable

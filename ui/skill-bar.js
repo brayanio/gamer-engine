@@ -1,6 +1,6 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 
-export default gamer.ui( 'skillbar', null,
+export default gmr.createUI( 'skillbar', null,
   (el, ...skills) => skills.forEach(skill => {
     const button = document.createElement('button')
     button.onclick = skill.fn
@@ -10,7 +10,7 @@ export default gamer.ui( 'skillbar', null,
     const label = document.createElement('label')
     label.innerText = skill.key
     button.appendChild(label)
-    gamer.addKeyFn(skill.key, () => button.click())
+    gmr.addKeyFn(skill.key, () => button.click())
     el.appendChild(button)
   })
 )

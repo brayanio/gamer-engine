@@ -1,12 +1,12 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 import animations from '../asset/progress/progress.js'
 
-export default gamer.behavior(
+export default gmr.behavior(
   'progress-bar',
   {
     bar: null,
     initBar: (sprite, animation) => {
-      let bar = gamer.sprite()
+      let bar = gmr.sprite()
       animations.forEach(animation => bar.addAnimation(...animation))
       bar.setAnimation(animation)
       let b = sprite.getBounds()

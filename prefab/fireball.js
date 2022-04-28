@@ -1,8 +1,8 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 import animations from '../asset/fireball/fireball.js'
 import behaviorProjectile from '../behavior/projectile.js'
 
-export default gamer.prefab(
+export default gmr.prefab(
   'fireball', 
   sprite => {
     sprite.setAnimation('Idle')

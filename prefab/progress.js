@@ -1,8 +1,8 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 import animations from '../asset/progress/progress.js'
 import behaviorProgressBar from '../behavior/progress-bar.js'
 
-export default gamer.prefab(
+export default gmr.prefab(
   'progress',
   sprite => {
     behaviorProgressBar.attach( sprite )

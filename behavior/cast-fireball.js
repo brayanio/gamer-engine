@@ -1,6 +1,6 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 
-export default gamer.behavior(
+export default gmr.behavior(
   'cast-fireball',
   {
     castFireball: (sprite, scene, enemy) => {

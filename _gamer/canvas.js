@@ -1,11 +1,10 @@
 import imgManager from './img-manager.js'
 import keyManager from './key-manager.js'
 
-let canvas, ctx, ui, constant
+let container, imgContainer, canvas, ctx, ui, constant
 
-ui = document.createElement('div')
-ui.classList.add('ui')
-
+const getContainer = () => container
+const getImgContainer = () => imgContainer
 const getCanvas = () => canvas
 const getCtx = () => ctx
 const getUI = () => ui
@@ -13,14 +12,20 @@ const CONSTANT = () => constant
 
 const getId = id => ui.querySelector(`#${id}`)
 
-const setup = (canvasElement, constants) => {
-  canvas = canvasElement
+const setup = (containerElement, constants) => {
+  container = containerElement
+  canvas = document.createElement('canvas')
   constant = constants
   canvas.setAttribute('width', constant.RESOLUTION[0])
   canvas.setAttribute('height', constant.RESOLUTION[1])
   if(constant.FULLSCREEN) canvas.classList.add('fullscreen')
   ctx = canvas.getContext("2d")
-  document.body.appendChild(ui)
+  imgContainer = imgManager.createImgManager()
+  ui = document.createElement('div')
+  ui.classList.add('ui')
+  container.appendChild(imgContainer)
+  container.appendChild(canvas)
+  container.appendChild(ui)
   keyManager.startKeyListener()
 }
 
@@ -110,6 +115,8 @@ const clear = () =>
   ctx.clearRect(0, 0, constant.RESOLUTION[0], constant.RESOLUTION[1])
 
 export default {
+  getContainer,
+  getImgContainer,
   getCanvas,
   getUI,
   getCtx,

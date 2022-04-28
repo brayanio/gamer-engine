@@ -1,6 +1,6 @@
-import gamer from '../_gamer/gamer.js'
+import gmr from '../gmr.js'
 
-export default gamer.ui( 'movepad',
+export default gmr.createUI( 'movepad',
   `
     <div class="top">
       <button id="up">Up</button>
@@ -12,9 +12,9 @@ export default gamer.ui( 'movepad',
     </div>
   `,
   () => ['up', 'left', 'right', 'down'].forEach( key => {
-    gamer.getId(key).onmousedown = () => gamer.setKeyState(key, true)
-    gamer.getId(key).onmouseup = () => gamer.setKeyState(key, false)
-    gamer.getId(key).ontouchstart = () => gamer.setKeyState(key, true)
-    gamer.getId(key).ontouchend = () => gamer.setKeyState(key, false)
+    gmr.getId(key).onmousedown = () => gmr.setKeyState(key, true)
+    gmr.getId(key).onmouseup = () => gmr.setKeyState(key, false)
+    gmr.getId(key).ontouchstart = () => gmr.setKeyState(key, true)
+    gmr.getId(key).ontouchend = () => gmr.setKeyState(key, false)
   })
 )
