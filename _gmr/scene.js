@@ -56,11 +56,17 @@ export default (constant, imgManager, init) => {
   
     const onPreRender = fn => preRenderFN = fn
     const onPostRender = fn => postRenderFN = fn
+
+    const updateUI = () => {
+      sprites.forEach(sprite => {
+        sprite.updateUI()
+      })
+    }
     
     const exportable = {
       render, postRender, addSprite, removeSprite, 
       load, onPreRender, onPostRender,
-      addPrefab, removePrefab, spawn
+      addPrefab, removePrefab, spawn, updateUI
     }
     if(init) init(exportable)
     return exportable

@@ -1,4 +1,4 @@
-export default (constant, canvas, ui) => {
+export default (constant, canvas, ui, camera) => {
   let animations = {}
   let index = 0, animationPriority = 0
   let currentAnimation
@@ -74,28 +74,28 @@ export default (constant, canvas, ui) => {
     if(!flipped)
       engine.drawImg(
         animations[currentAnimation][index],
-        bounds.x,
-        bounds.y,
-        bounds.width,
-        bounds.height
+        bounds.x * camera.getZoom() + camera.getPosition().x,
+        bounds.y * camera.getZoom() + camera.getPosition().y,
+        bounds.width * camera.getZoom(),
+        bounds.height * camera.getZoom()
       )
     else
       engine.inReverse(() => {
         engine.drawImg(
           animations[currentAnimation][index],
-          -bounds.x,
-          bounds.y,
-          bounds.width,
-          bounds.height,
+          -bounds.x * camera.getZoom() - camera.getPosition().x,
+          bounds.y * camera.getZoom() + camera.getPosition().y,
+          bounds.width * camera.getZoom(),
+          bounds.height * camera.getZoom(),
           true
         )
       })
     if(outline){
       engine.drawOutline(
-        bounds.x,
-        bounds.y,
-        bounds.width,
-        bounds.height
+        bounds.x * camera.getZoom() + camera.getPosition().x,
+        bounds.y * camera.getZoom() + camera.getPosition().y,
+        bounds.width * camera.getZoom(),
+        bounds.height * camera.getZoom()
       )
     }
     sprites.forEach(sprite => {
@@ -211,7 +211,7 @@ export default (constant, canvas, ui) => {
     const screenBounds = canvas.getBoundingClientRect()
     return {
       x: x * (screenBounds.width / constant.RESOLUTION[0]),
-      y: y * (screenBounds.height / constant.RESOLUTION[1]),
+      y: y * (screenBounds.height / constant.RESOLUTION[1])
     }
   }
   const trackUI = (id, tag, offset) => {
@@ -239,11 +239,12 @@ export default (constant, canvas, ui) => {
         width: (el.getAttribute('offset-width') || 0),
         height: (el.getAttribute('offset-height') || 0)
       }
-      el.style.top = scale(0, bounds.y + offset.y).y + 'px'
-      el.style.left = scale(bounds.x + offset.x, 0).x + 'px'
-      el.style.width = scale(bounds.width + offset.width, 0).x + 'px'
-      el.style.height = scale(0, bounds.height + offset.height).y + 'px'
+      el.style.top = scale(0, bounds.y + offset.y).y  * camera.getZoom() + scale(0, camera.getPosition().y).y + 'px'
+      el.style.left = scale(bounds.x + offset.x, 0).x  * camera.getZoom() + scale(camera.getPosition().x, 0).x + 'px'
+      el.style.width = scale(bounds.width + offset.width, 0).x  * camera.getZoom() + 'px'
+      el.style.height = scale(0, bounds.height + offset.height).y  * camera.getZoom() + 'px'
     })
+    sprites.forEach(sprite => sprite.updateUI())
   }
   const getUI = id => elements[id]
   const clearUI = (...id) => {

@@ -1,8 +1,12 @@
 import loadScreen from "./load-screen.js"
 
+let el
+
 export default () => {
-  const el = document.createElement('div')
-  el.classList.add('gmr-img-manager')
+  if(!el) {
+    el = document.createElement('div')
+    el.classList.add('gmr-img-manager')
+  }
 
   let expected = 0
   let loading = 0
