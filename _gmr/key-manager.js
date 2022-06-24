@@ -7,39 +7,29 @@ export default (CONSTANT) => {
   }
 
   let keyObj = {}
+  let keyUpObj = {}
 
   const addKeyFn = (key, fn) => keyObj[key] = fn
   const removeKeyFn = key => delete keyObj[key]
   const clearKeyFn = () => keyObj = {}
 
+  const addKeyUpFn = (key, fn) => keyUpObj[key] = fn
+  const removeKeyUpFn = key => delete keyUpObj[key]
+  const clearKeyUpFn = () => keyUpObj = {}
+
+  let events = []
   const startKeyListener = () => {
-    onkeydown = event => {
-      if(event.key === CONSTANT.MOVEMENT_KEY.LEFT) 
-        key.left = true
-      else if(event.key === CONSTANT.MOVEMENT_KEY.RIGHT) 
-        key.right = true
-      else if(event.key === CONSTANT.MOVEMENT_KEY.UP) 
-        key.up = true
-      else if(event.key === CONSTANT.MOVEMENT_KEY.DOWN) 
-        key.down = true
-      else if(event.key === CONSTANT.MOVEMENT_KEY.DOWN) 
-        key.down = true
-      else 
-        Object.keys(keyObj).forEach(key => {
-          if(event.key === key) keyObj[key]()
-        })
-    }
-    
-    onkeyup = event => {
-      if(event.key === CONSTANT.MOVEMENT_KEY.LEFT) 
-        key.left = false
-      if(event.key === CONSTANT.MOVEMENT_KEY.RIGHT) 
-        key.right = false
-      if(event.key === CONSTANT.MOVEMENT_KEY.UP) 
-        key.up = false
-      if(event.key === CONSTANT.MOVEMENT_KEY.DOWN) 
-        key.down = false
-    }
+    clearKeyListener()
+    events.push(
+      e => keyObj[e.key] ? keyObj[e.key]() : null, 
+      e => keyUpObj[e.key] ? keyUpObj[e.key]() : null
+    )
+    addEventListener('keydown', events[0]),
+    addEventListener('keyup', events[1])
+  }
+  const clearKeyListener = () => {
+    events.forEach((e, i) => removeEventListener(i?'keyup':'keydown', events[i]))
+    events = []
   }
 
   const isMoveActive = () => (key.up || key.down || key.left || key.right)
@@ -50,6 +40,7 @@ export default (CONSTANT) => {
   return { 
     startKeyListener, getKey, setKeyState, 
     isMoveActive, addKeyFn, removeKeyFn, 
-    clearKeyFn 
+    clearKeyFn, addKeyUpFn, removeKeyUpFn,
+    clearKeyUpFn
   }
 }

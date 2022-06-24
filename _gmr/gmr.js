@@ -15,7 +15,7 @@ const setup = (container, constant) => {
   let canvas = gmrCanvas(constant, imgManager)
   let ui = document.createElement('ui')
   ui.classList.add('gmr-ui')
-  container.appendChild( imgManager.el )
+  document.body.insertBefore( imgManager.el, document.querySelector('app') )
   container.appendChild( canvas.el )
   container.appendChild( ui )
   const camera = gmrCamera()
@@ -32,7 +32,7 @@ const setup = (container, constant) => {
 
   const openScene = scene => {
     currentScene = scene
-    imgManager.switchScene( scene )
+    // imgManager.switchScene( scene )
     imgManager.onSceneLoad(() => {
       renderLoop.render(() => {
         canvas.clear()
@@ -73,6 +73,15 @@ const setup = (container, constant) => {
   }
   const cameraPosition = camera.getPosition
 
+  const start = () => imgManager.sceneLoad()
+
+  const off = renderLoop.off
+  const on = renderLoop.on
+  const delay = renderLoop.delay
+
+  const setResolution = (x, y) =>  constant.RESOLUTION = [x, y]
+  const setFPS = fps =>  constant.FRAMES_PER_SECOND = fps
+
   return {
     container, canvas, imgManager, ui, constant,
     clearUI, getId, openScene, closeScene, createUI,
@@ -80,10 +89,11 @@ const setup = (container, constant) => {
     prefab: (name, fn, ...animations) => gmrPrefab(constant, canvas.el, ui, camera, name, fn, ...animations),
     sprite: () => gmrSprite(constant, canvas.el, ui, camera),
     behavior: gmrBehavior, ...keyManager,
-    zoom, pan, cameraPosition
+    zoom, pan, cameraPosition,
+    start, off, on, delay,
+    setResolution, setFPS
   }
 }
-
 
 export default setup
 

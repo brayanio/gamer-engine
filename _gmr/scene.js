@@ -31,16 +31,19 @@ export default (constant, imgManager, init) => {
     }
   
     const load = engine => {
+      let imgAr = []
       sprites.forEach(sprite => {
-        sprite.load(engine)
+        sprite.load(engine, imgAr)
       })
       Object.values(prefabs).forEach(prefab => 
         prefab.animations.forEach(animation => {
           const ar = [...animation]
           ar.shift()
-          imgManager.loadImg(...ar)
+          imgAr.push(...ar)
         })
       )
+
+      imgManager.loadImg(...imgAr)
       onresize = () => sprites.forEach(sprite => sprite.updateUI())
     }
     

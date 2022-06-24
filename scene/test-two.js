@@ -5,6 +5,7 @@ import prefabGreenMage from '../prefab/green-mage.js'
 import uiMovepad from '../ui/move-pad.js'
 import uiLogo from '../ui/logo.js'
 import sceneTest from '../scene/test.js'
+import uiZoomBtns from '../ui/zoom-btns.js'
 
 export default gmr.scene( scene => {
   //init prefabs
@@ -22,6 +23,7 @@ export default gmr.scene( scene => {
   //init ui
   uiLogo()
   uiMovepad()
+  uiZoomBtns()
 
   //on pre-render
   scene.onPreRender(() => {

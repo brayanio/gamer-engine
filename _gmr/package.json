@@ -1,7 +1,7 @@
 {
   "name": "gmr",
-  "version": "0.2.0",
-  "description": "js 2d canvas engine",
+  "version": "0.2.1",
+  "description": "JS 2d canvas engine",
   "main": "gmr.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -11,10 +11,23 @@ export default gmr.createUI( 'movepad',
       <button id="right">Right</button>
     </div>
   `,
-  () => ['up', 'left', 'right', 'down'].forEach( key => {
-    gmr.getId(key).onmousedown = () => gmr.setKeyState(key, true)
-    gmr.getId(key).onmouseup = () => gmr.setKeyState(key, false)
-    gmr.getId(key).ontouchstart = () => gmr.setKeyState(key, true)
-    gmr.getId(key).ontouchend = () => gmr.setKeyState(key, false)
-  })
+  () => {
+
+    const keybinds = {
+      up: 'w',
+      down: 's',
+      left: 'a',
+      right: 'd'
+    }
+
+    gmr.clearKeyFn()
+    ;['up', 'left', 'right', 'down'].forEach( key => {
+      gmr.getId(key).onmousedown = () => gmr.setKeyState(key, true)
+      gmr.getId(key).onmouseup = () => gmr.setKeyState(key, false)
+      gmr.getId(key).ontouchstart = () => gmr.setKeyState(key, true)
+      gmr.getId(key).ontouchend = () => gmr.setKeyState(key, false)
+      gmr.addKeyFn(keybinds[key], () => gmr.setKeyState(key, true))
+      gmr.addKeyUpFn(keybinds[key], () => gmr.setKeyState(key, false))
+    })
+  }
 )

@@ -1,7 +1,7 @@
 export default (name, initObj, initFn, ...extend) => {
   let behaviorObj = {...initObj}
 
-  const attach = sprite => {
+  const attach = (sprite, ...props) => {
     extend.forEach(b => b.attach(sprite))
     sprite.addBehavior(name, () => detatch(sprite))
     const obj = {...behaviorObj}
@@ -11,7 +11,7 @@ export default (name, initObj, initFn, ...extend) => {
       else 
         sprite[key] = obj[key]
     })
-    if(initFn) initFn(sprite)
+    if(initFn) initFn(sprite, ...props)
   }
 
   const detatch = sprite => {

@@ -9,7 +9,6 @@ import prefabGreenMage from '../prefab/green-mage.js'
 import prefabProgress from '../prefab/progress.js'
 import prefabRedMage from '../prefab/red-mage.js'
 import uiMovepad from '../ui/move-pad.js'
-import uiZoomBtns from '../ui/zoom-btns.js'
 import uiSkillbar from '../ui/skill-bar.js'
 import uiLogo from '../ui/logo.js'
 import sceneTestTwo from '../scene/test-two.js'
@@ -27,10 +26,10 @@ export default gmr.scene( scene => {
   
   const enemy = scene.spawn( 'red-mage', 1000, 325, 300, 300 )
   const player = scene.spawn( 'green-mage', 25, 175, 300, 300 )
-  // behaviorMovable.attach( player )
+  behaviorMovable.attach( player )
   behaviorCastFireball.attach( player )
   behaviorCastLightning.attach( player )
-  // player.setSpeed( 30 )
+  player.setSpeed( 30 )
 
   const doorTestTwo = scene.spawn('door', 1720, 500, 200, 400)
 
@@ -38,8 +37,7 @@ export default gmr.scene( scene => {
 
   //init ui
   uiLogo()
-  // uiMovepad()
-  uiZoomBtns()
+  uiMovepad()
   uiSkillbar(
     {img: 'magicianSkill3', key: '1', fn: () => {
       if(!enemy.getParent()) return null
@@ -63,7 +61,7 @@ export default gmr.scene( scene => {
 
   //on pre-render
   scene.onPreRender(() => {
-    // player.checkUserMovement()
+    player.checkUserMovement()
     projectiles = projectiles.filter( p => p.getParent() )
     projectiles.forEach( projectile => projectile.projectileMovement() )
   })

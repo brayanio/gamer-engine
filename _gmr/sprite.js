@@ -8,6 +8,9 @@ export default (constant, canvas, ui, camera) => {
   let outline = false
   let behaviors = {}
   let loop = false
+  let background = false
+  let backgroundColor = '#000000'
+  let hide = false
 
   // animation
 
@@ -33,6 +36,8 @@ export default (constant, canvas, ui, camera) => {
     if( !currentAnimation ) currentAnimation = name
   }
 
+  const setHide = v => hide = v
+
   // behavior
 
   const addBehavior = (name, detatch) => behaviors[name] = detatch
@@ -46,6 +51,7 @@ export default (constant, canvas, ui, camera) => {
   // sprites
 
   let sprites = []
+  const children = () => sprites
   const addSprite = sprite => {
     sprites.push(sprite)
     sprite.setParent( exportable )
@@ -61,35 +67,47 @@ export default (constant, canvas, ui, camera) => {
 
   // engine
 
-  const load = engine => {
+  const load = (engine, imgAr) => {
     Object.values(animations).forEach(imgArray =>
-      engine.loadImg( ...imgArray )
+      imgAr.push( ...imgArray )
     )
     sprites.forEach(sprite => {
-      sprite.load( engine )
+      sprite.load( engine, imgAr )
     })
   }
 
   const render = engine => {
-    if(!flipped)
-      engine.drawImg(
-        animations[currentAnimation][index],
+    if(hide) return null
+    if(background){
+      engine.drawRect(
+        backgroundColor,
         bounds.x * camera.getZoom() + camera.getPosition().x,
         bounds.y * camera.getZoom() + camera.getPosition().y,
         bounds.width * camera.getZoom(),
         bounds.height * camera.getZoom()
       )
-    else
-      engine.inReverse(() => {
+    }
+    if(animations[currentAnimation]){
+      if(!flipped)
         engine.drawImg(
           animations[currentAnimation][index],
-          -bounds.x * camera.getZoom() - camera.getPosition().x,
+          bounds.x * camera.getZoom() + camera.getPosition().x,
           bounds.y * camera.getZoom() + camera.getPosition().y,
           bounds.width * camera.getZoom(),
-          bounds.height * camera.getZoom(),
-          true
+          bounds.height * camera.getZoom()
         )
-      })
+      else
+        engine.inReverse(() => {
+          engine.drawImg(
+            animations[currentAnimation][index],
+            -bounds.x * camera.getZoom() - camera.getPosition().x,
+            bounds.y * camera.getZoom() + camera.getPosition().y,
+            bounds.width * camera.getZoom(),
+            bounds.height * camera.getZoom(),
+            true
+          )
+        })
+    }
     if(outline){
       engine.drawOutline(
         bounds.x * camera.getZoom() + camera.getPosition().x,
@@ -104,11 +122,13 @@ export default (constant, canvas, ui, camera) => {
   }
 
   const postRender = () => {
-    index++
-    if(index >= animations[currentAnimation].length ){
-      index = 0
-      if(!loop)
-        animationPriority = 0
+    if(animations[currentAnimation]){
+      index++
+      if(index >= animations[currentAnimation].length ){
+        index = 0
+        if(!loop)
+          animationPriority = 0
+      }
     }
     sprites.forEach(sprite => sprite.postRender())
   }
@@ -125,8 +145,14 @@ export default (constant, canvas, ui, camera) => {
   }
 
   const move = (x, y) => {
-    bounds.x += x
-    bounds.y += y
+    if(getParent() && getParent().isSprite){
+      offset.x += x
+      offset.y += y
+    }
+    else{
+      bounds.x += x
+      bounds.y += y
+    }
     updateSpriteBounds()
     checkBounds()
   }
@@ -203,6 +229,10 @@ export default (constant, canvas, ui, camera) => {
   // util
 
   const setOutline = b => outline = b
+  const setBackground = (b, color) => {
+    background = b
+    if(b && color) backgroundColor = color
+  }
   
   // ui
 
@@ -234,15 +264,18 @@ export default (constant, canvas, ui, camera) => {
   const updateUI = () => {
     Object.values(elements).forEach(el => {
       const offset = {
-        x: (el.getAttribute('offset-x') || 0),
-        y: (el.getAttribute('offset-y') || 0),
-        width: (el.getAttribute('offset-width') || 0),
-        height: (el.getAttribute('offset-height') || 0)
+        x: parseInt(el.getAttribute('offset-x') || '0'),
+        y: parseInt(el.getAttribute('offset-y') || '0'),
+        width: parseInt(el.getAttribute('offset-width') || '0'),
+        height: parseInt(el.getAttribute('offset-height') || '0')
       }
       el.style.top = scale(0, bounds.y + offset.y).y  * camera.getZoom() + scale(0, camera.getPosition().y).y + 'px'
       el.style.left = scale(bounds.x + offset.x, 0).x  * camera.getZoom() + scale(camera.getPosition().x, 0).x + 'px'
       el.style.width = scale(bounds.width + offset.width, 0).x  * camera.getZoom() + 'px'
       el.style.height = scale(0, bounds.height + offset.height).y  * camera.getZoom() + 'px'
+      if(hide){
+        el.classList.add('d-none')
+      }
     })
     sprites.forEach(sprite => sprite.updateUI())
   }
@@ -264,18 +297,20 @@ export default (constant, canvas, ui, camera) => {
   const setParent = p => parent = p
   const getParent = () => parent
   const destroy = () => {
+    clearUI()
     if(parent && parent.removeSprite) parent.removeSprite(exportable)
     parent = undefined
   }
 
-  const exportable = {
+  const exportable = { isSprite: true,
     setAnimation, addAnimation, load, render,
     postRender, move, flip, getBounds, checkBounds,
-    setOutline, addBehavior, removeBehavior,
+    setOutline, setBackground, addBehavior, removeBehavior,
     setBounds, setPosition, setSize, getCenter,
     trackUI, updateUI, getUI, clearUI,
     getSize, getPosition, isTouching, setParent, destroy,
-    addSprite, removeSprite, setOffset, getParent, getOffset
+    addSprite, removeSprite, setOffset, getParent, getOffset,
+    children, setHide
   }
 
   return exportable

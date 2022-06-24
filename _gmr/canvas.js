@@ -6,9 +6,9 @@ export default (constant, imgManager) => {
   if(constant.FULLSCREEN) canvas.classList.add('gmr-fullscreen')
   let ctx = canvas.getContext("2d")
 
-  const drawOutline = (x, y, w, h) => {
+  const drawOutline = (color, x, y, w, h) => {
     ctx.save()
-    ctx.strokeStyle = 'red'
+    ctx.strokeStyle = color
     ctx.strokeRect(x, y, w, h)
     ctx.stroke()
     ctx.restore()
@@ -24,6 +24,14 @@ export default (constant, imgManager) => {
       ctx.drawImage(img, 0, 0, imgWidth, imgHeight, x, y, width, height)
     }
   }
+
+  const drawRect = (color, x, y, w, h) => {
+    ctx.save()
+    ctx.fillStyle = color
+    ctx.fillRect(x, y, w, h)
+    ctx.stroke()
+    ctx.restore()
+  }
   
   const inReverse = (fn) => {
     ctx.save()
@@ -38,6 +46,6 @@ export default (constant, imgManager) => {
   return {
     el: canvas, 
     clear,
-    drawOutline, drawImg, inReverse
+    drawOutline, drawImg, inReverse, drawRect
   }
 }

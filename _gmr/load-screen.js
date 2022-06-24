@@ -7,7 +7,7 @@ el.appendChild(progress)
 const label = document.createElement('label')
 el.appendChild(label)
 
-document.body.appendChild(el)
+// document.body.appendChild(el)
 
 export default onImgLoad => {
   document.body.appendChild(el)
