@@ -1,36 +1,19 @@
-# gmr 
-
-## Ecosystem
+# Ecosystem
 
 > gmr uses a simple ecosystem of data types to quickly create powerful scenes.
 
 The gmr ecosystem includes:
 
 * gmr
+  * A function that takes a HTMLElement (div) and returns a gmrInstance. You can use the gmrInstance to create scenes, sprites, behaviors, or ui for your canvas.
 * scene
+  * Holds all sprites and initialization code for one "page" of the game (home scene, play scene, credits scene, ...etc).
 * sprite
+  * An object within the scene. They contain important information like positioning. Usually sprites contain images / animations.
 * behavior
+  * Adds functionality to a sprite (movement behavior, healthbar behavior, projectile behavior, ...etc).
 * ui
-
-### gmr
-
-gmr takes a div and returns a gmrInstance. You can use the gmrInstance to create scenes, sprites, behaviors, or ui for your canvas.
-
-### scene
-
-A scene holds all sprites and initialization code for one "page" of the game (home scene, play scene, credits scene, ...etc).
-
-### sprite
-
-A sprite is an object within the scene. They contain important information like positioning. Usually sprites contain images / animations.
-
-### behavior
-
-Adds functionality to a sprite (movement behavior, healthbar behavior, projectile behavior, ...etc).
-
-### ui
-
-Creates HTML that sits above your canvas.
+  * Creates HTML that sits above your canvas.
 
 ## Flow
 
