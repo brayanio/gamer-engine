@@ -40,7 +40,10 @@ export default (constant, canvas, ui, camera) => {
 
   // behavior
 
-  const addBehavior = (name, detatch) => behaviors[name] = detatch
+  const addBehavior = (name, detatch) => {
+    if(!behaviors[name]) behaviors[name] = detatch
+    return 'Error: behavior already added'
+  }
   const removeBehavior = name => {
     if(behaviors[name]){
       behaviors[name]()

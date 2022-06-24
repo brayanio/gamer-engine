@@ -20,6 +20,6 @@ The gmr ecosystem includes:
 
 ## Flow
 
-> gmr will have you coding reusable code in no time.
+> gmr will have you coding reusable scripts in no time.
 
 The best way to organize gmr is to create lots of focused one-goal specific behaviors. You can quickly create complex sprites that share many of the same functionalities.
