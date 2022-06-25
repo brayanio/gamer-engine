@@ -18,11 +18,11 @@ export default gmr.scene( scene => {
   )
   scene.spawn( 'bg', 0, 0, ...gmr.getOptions().RESOLUTION)
   
-  const player = scene.spawn( 'green-mage', 825, 125, 300, 300 )
+  const player = scene.spawn( 'green-mage', 400, 1500, 300, 300 )
   behaviorMovable.attach( player )
-  player.setSpeed( 30 )
+  player.setSpeed( 18 )
 
-  const doorTest = scene.spawn('door', 0, 500, 200, 400)
+  const doorTest = scene.spawn('door', 0, 1500, 200, 400)
 
   //init ui
   uiLogo()
@@ -41,6 +41,8 @@ export default gmr.scene( scene => {
       gmr.camera.setZoom(1)
       gmr.camera.clearFollow()
       gmr.camera.pan(0,0, gmr.getOptions().FRAMES_PER_SECOND * .1)
+      gmr.setFPS(60);
+      player.setAnimationBuffer(2)
     }
   })
 })

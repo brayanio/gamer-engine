@@ -7,7 +7,7 @@ export default gmr.prefab(
   'green-mage',
   sprite => {
     sprite.setAnimation('Idle')
-    sprite.setOutline(true)
+    // sprite.setOutline(true)
 
     const b = sprite.getBounds()
     const healthBar = prefabProgress.sprite( 
@@ -24,6 +24,7 @@ export default gmr.prefab(
       healthBar.updateBar(sprite.health, sprite.maxHealth)
     )
 
+    sprite.setAnimationBuffer(2)
   },
   ...animations
 )

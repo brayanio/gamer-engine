@@ -8,7 +8,7 @@ export default gmr.prefab(
     sprite.setAnimation('Idle')
     // sprite.setOutline(true)
     behaviorProjectile.attach( sprite )
-    sprite.setSpeed(35)
+    sprite.setSpeed(70)
 
     sprite.onProjectileHit( target => {
       target.changeHealth( -10 )
@@ -19,6 +19,7 @@ export default gmr.prefab(
       gmr.renderLoop.delay( gmr.getOptions().FRAMES_PER_SECOND * .25, () => gmr.camera.shake(false))
     })
 
+    sprite.setAnimationBuffer(2)
   },
   ...animations
 )

@@ -1,6 +1,6 @@
 export default (getOptions, canvas, ui, camera) => {
   let animations = {}
-  let index = 0, animationPriority = 0
+  let index = 0, animationPriority = 0, animationBuffer = 0, animationBufferIndex = 0
   let currentAnimation
   let bounds = {x: 0, y: 0, width: 0, height: 0}
   let offset = {x: 0, y: 0}
@@ -41,6 +41,8 @@ export default (getOptions, canvas, ui, camera) => {
       if( !currentAnimation ) currentAnimation = name
     }
   }
+
+  const setAnimationBuffer = val => animationBuffer = val
 
   const setHide = v => hide = v
 
@@ -147,7 +149,10 @@ export default (getOptions, canvas, ui, camera) => {
 
   const postRender = () => {
     if(animations[currentAnimation]){
-      index++
+      if(animationBufferIndex >= animationBuffer){
+        index++
+        animationBufferIndex = 0
+      } else animationBufferIndex++
       if(index >= animations[currentAnimation].length ){
         index = 0
         if(!loop)
@@ -341,7 +346,7 @@ export default (getOptions, canvas, ui, camera) => {
     trackUI, updateUI, getUI, clearUI,
     getSize, getPosition, isTouching, setParent, destroy,
     addSprite, removeSprite, setOffset, getParent, getOffset,
-    children, setHide
+    children, setHide, setAnimationBuffer
   }
 
   return exportable

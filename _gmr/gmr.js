@@ -118,6 +118,11 @@ const setup = (container, options) => {
     canvas.el.setAttribute('height', getOptions().RESOLUTION[1])
   }
   const setFPS = fps =>  options.FRAMES_PER_SECOND = fps
+  const setFullscreen = b => {
+    options.FULLSCREEN = b
+    canvas.el.classList[b?'add':'remove']('fullscreen')
+    ui.classList[b?'add':'remove']('fullscreen')
+  }
 
   return {
     container, canvas, imgManager, getOptions, camera, renderLoop,
@@ -128,7 +133,7 @@ const setup = (container, options) => {
     behavior: gmrBehavior,
     animation,
     ...keyManager,
-    setResolution, setFPS
+    setResolution, setFPS, setFullscreen
   }
 }
 

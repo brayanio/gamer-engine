@@ -94,6 +94,10 @@
   overflow: hidden;
 }
 
+.gmr-ui.fullscreen{
+  position: fixed;
+}
+
 .gmr-ui > * {
   position: absolute;
 }
@@ -112,7 +116,7 @@
   cursor: pointer;
 }
 
-.gmr-shake{
+.gmr-shake .gmr-canvas, .gmr-shake .gmr-ui{ 
   animation: gmr-shake 1s infinite;
 }
 

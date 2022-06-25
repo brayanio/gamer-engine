@@ -27,7 +27,7 @@ export default gmr.prefab(
     )
 
     behaviorTargetable.attach( sprite )
-
+    sprite.setAnimationBuffer(2)
   },
   ...animations
 )

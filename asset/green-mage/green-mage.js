@@ -1,12 +1,12 @@
 let animations = []
 ;[
     ['Attacking', 11],
-    ['Dying', 14],
-    ['Hurt', 11],
+    // ['Dying', 14],
+    // ['Hurt', 11],
     ['Idle', 11],
-    ['Jump Loop', 5],
-    ['Jump Start', 5],
-    ['Taunt', 17],
+    // ['Jump Loop', 5],
+    // ['Jump Start', 5],
+    // ['Taunt', 17],
     ['Walking', 17],
 ]
 .forEach(animation => {

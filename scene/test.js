@@ -28,12 +28,14 @@ export default gmr.scene( scene => {
   )
   scene.spawn( 'bg', 0, 0, ...gmr.getOptions().RESOLUTION)
   
-  const enemy = scene.spawn( 'red-mage', 1000, 325, 300, 300 )
-  const player = scene.spawn( 'green-mage', 25, 175, 300, 300 )
+  const enemy = scene.spawn( 'red-mage', 75, 375, 300, 300 )
+  const player = scene.spawn( 'green-mage', 1220, 500, 300, 300 )
   behaviorMovable.attach( player )
   behaviorCastFireball.attach( player )
   behaviorCastLightning.attach( player )
-  player.setSpeed( 30 )
+  player.setSpeed( 12 )
+  enemy.flip()
+  player.flip()
 
   const doorTestTwo = scene.spawn('door', 1720, 500, 200, 400)
 
