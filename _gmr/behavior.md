@@ -24,7 +24,7 @@
 >
 > initFN | function
 > * Run a function that passes the sprite as the first argument.
-> * Any arguments passed to the [`behavior.attach`](#gmrbehaviorattach--undefined) will be passed to the initFN as well.
+> * Any arguments passed to the [`behavior.attach`](#attach--undefined) will be passed to the initFN as well.
 >
 > ...requires | gmrBehavior
 > * Any required behaviors will be attached to the sprite before the parent behavior attaches.
