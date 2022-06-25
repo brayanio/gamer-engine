@@ -28,7 +28,7 @@ const setup = (container, options) => {
   container.appendChild( ui )
 
   // css
-  let href = 'https://raw.githubusercontent.com/toddlewis-studio/gmr-engine/main/_style/gmr.css'
+  let href = 'https://gmr-engine.blbbrayan.repl.co/_style/gmr.css'
   let styleEl = document.querySelector(`[href="${href}"]`)
   if(!styleEl) {
     styleEl = document.createElement('link')
