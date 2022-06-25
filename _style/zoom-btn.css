@@ -1,0 +1,8 @@
+.zoom-btn{
+  top: 0;
+  left: 0;
+}
+.zoom-btn div{
+  display: flex;
+  flex-direction: column;
+}

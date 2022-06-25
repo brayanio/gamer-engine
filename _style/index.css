@@ -3,6 +3,7 @@
 @import url("move-pad.css");
 @import url("skill-bar.css");
 @import url("target-select.css");
+@import url("zoom-btn.css");
 @import url('https://fonts.googleapis.com/css2?family=Palette+Mosaic&display=swap');
 
 * { font-family: 'Palette Mosaic', sans-serif; }
@@ -14,4 +15,13 @@ body{
 #app{
   width: 800px;
   height: 600px;
+  border-radius: 9px;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.3);
+}
+
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1%;
 }

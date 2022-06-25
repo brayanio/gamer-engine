@@ -2,6 +2,7 @@ import gmr from '../gmr.js'
 import behaviorMovable from '../behavior/moveable.js'
 import behaviorCastFireball from '../behavior/cast-fireball.js'
 import behaviorCastLightning from '../behavior/cast-lightning.js'
+import prefabBG from '../prefab/bg.js'
 import prefabDoor from '../prefab/door.js'
 import prefabFireball from '../prefab/fireball.js'
 import prefabLightning from '../prefab/lightning.js'
@@ -15,14 +16,17 @@ import sceneTestTwo from '../scene/test-two.js'
 
 export default gmr.scene( scene => {
   //init prefabs
+  gmr.setResolution(1920, 1080)
   scene.addPrefab(
     prefabRedMage,
     prefabGreenMage,
     prefabFireball,
     prefabLightning,
     prefabProgress,
-    prefabDoor
+    prefabDoor,
+    prefabBG
   )
+  scene.spawn( 'bg', 0, 0, ...gmr.getOptions().RESOLUTION)
   
   const enemy = scene.spawn( 'red-mage', 1000, 325, 300, 300 )
   const player = scene.spawn( 'green-mage', 25, 175, 300, 300 )

@@ -1,6 +1,6 @@
 import guid from './guid.js'
 
-const setup = (constant) => {
+const setup = (getOptions, camera) => {
   let isOn = false
   let renderFN
   let delays = []
@@ -11,11 +11,12 @@ const setup = (constant) => {
   const render = fn => {
     loopId = guid()
     isOn = true
+    if(fn)
     renderFN = fn
     onRenderLoop(
       () => renderFN(),
       () => {return {isOn, loopId}},
-      constant, 
+      getOptions, camera,
       () => delays,
       filterDelays
     )
@@ -25,28 +26,19 @@ const setup = (constant) => {
     loopId = undefined
   }
   const filterDelays = () => delays = delays.filter(obj => obj.i < obj.frames)
-  const on = () => {
-    isOn = true
-    onRenderLoop(
-      () => renderFN(),
-      () => {return {isOn, loopId}},
-      constant,
-      () => delays,
-      filterDelays
-    )
-  }
   const delay = (frames, fn) => delays.push({i: 0, frames, fn})
 
   return {
-    onRender, setOn, render, off, on, delay
+    onRender, setOn, render, off, on: render, delay
   }
 }
 
-const onRenderLoop = (getFn, isRendering, constant, getDelays, filterDelays) => {
+const onRenderLoop = (getFn, isRendering, getOptions, camera, getDelays, filterDelays) => {
   const render = (loopId) => {
     if(isRendering().isOn && isRendering().loopId === loopId){
-      const framerate = 1000 / constant.FRAMES_PER_SECOND
+      const framerate = 1000 / getOptions().FRAMES_PER_SECOND
       const delta = Date.now()
+      if(camera.panInfo().isPanning) camera.pan()
       getFn()
       getDelays().forEach(obj => {
         obj.i++

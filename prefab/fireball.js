@@ -15,6 +15,8 @@ export default gmr.prefab(
       if(target.health <= 0)
         target.destroy()
       sprite.destroy()
+      gmr.camera.shake()
+      gmr.renderLoop.delay( gmr.getOptions().FRAMES_PER_SECOND * .25, () => gmr.camera.shake(false))
     })
 
   },

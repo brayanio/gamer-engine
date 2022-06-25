@@ -1,6 +1,6 @@
 import gmr from '../gmr.js'
 
-export default gmr.createUI( 'movepad',
+export default gmr.ui.component( 'movepad',
   `
     <div class="top">
       <button id="up">Up</button>
@@ -11,7 +11,7 @@ export default gmr.createUI( 'movepad',
       <button id="right">Right</button>
     </div>
   `,
-  () => {
+  (el) => {
 
     const keybinds = {
       up: 'w',
@@ -22,10 +22,10 @@ export default gmr.createUI( 'movepad',
 
     gmr.clearKeyFn()
     ;['up', 'left', 'right', 'down'].forEach( key => {
-      gmr.getId(key).onmousedown = () => gmr.setKeyState(key, true)
-      gmr.getId(key).onmouseup = () => gmr.setKeyState(key, false)
-      gmr.getId(key).ontouchstart = () => gmr.setKeyState(key, true)
-      gmr.getId(key).ontouchend = () => gmr.setKeyState(key, false)
+      gmr.ui.query(el, '#'+key).onmousedown = () => gmr.setKeyState(key, true)
+      gmr.ui.query(el, '#'+key).onmouseup = () => gmr.setKeyState(key, false)
+      gmr.ui.query(el, '#'+key).ontouchstart = () => gmr.setKeyState(key, true)
+      gmr.ui.query(el, '#'+key).ontouchend = () => gmr.setKeyState(key, false)
       gmr.addKeyFn(keybinds[key], () => gmr.setKeyState(key, true))
       gmr.addKeyUpFn(keybinds[key], () => gmr.setKeyState(key, false))
     })

@@ -1,8 +1,8 @@
 import sprite from "./sprite.js"
 
-export default (constant, canvas, ui, camera, name, fn, ...animations) => {
+export default (getOptions, canvas, ui, camera, name, fn, ...animations) => {
   const newSprite = (...bounds) => {
-    const spriteObj = sprite(constant, canvas, ui, camera)
+    const spriteObj = sprite(getOptions, canvas, ui, camera)
     animations.forEach(animation => 
       spriteObj.addAnimation(...animation)
     )

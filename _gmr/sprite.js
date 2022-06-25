@@ -1,4 +1,4 @@
-export default (constant, canvas, ui, camera) => {
+export default (getOptions, canvas, ui, camera) => {
   let animations = {}
   let index = 0, animationPriority = 0
   let currentAnimation
@@ -9,8 +9,10 @@ export default (constant, canvas, ui, camera) => {
   let behaviors = {}
   let loop = false
   let background = false
+  let outlineColor = 'red'
   let backgroundColor = '#000000'
   let hide = false
+  let spritesheet = false
 
   // animation
 
@@ -32,8 +34,12 @@ export default (constant, canvas, ui, camera) => {
   }
 
   const addAnimation = (name, ...srcAr) => {
-    animations[name] = srcAr
-    if( !currentAnimation ) currentAnimation = name
+    if(name === 'spritesheet') {
+      spritesheet = srcAr[0]
+    } else {
+      animations[name] = srcAr
+      if( !currentAnimation ) currentAnimation = name
+    }
   }
 
   const setHide = v => hide = v
@@ -42,7 +48,7 @@ export default (constant, canvas, ui, camera) => {
 
   const addBehavior = (name, detatch) => {
     if(!behaviors[name]) behaviors[name] = detatch
-    return 'Error: behavior already added'
+    else return 'Error: behavior already added'
   }
   const removeBehavior = name => {
     if(behaviors[name]){
@@ -71,9 +77,12 @@ export default (constant, canvas, ui, camera) => {
   // engine
 
   const load = (engine, imgAr) => {
-    Object.values(animations).forEach(imgArray =>
-      imgAr.push( ...imgArray )
-    )
+    if(spritesheet)
+      imgAr.push(spritesheet)
+    else 
+      Object.values(animations).forEach(imgArray =>
+        imgAr.push( ...imgArray )
+      )
     sprites.forEach(sprite => {
       sprite.load( engine, imgAr )
     })
@@ -92,13 +101,24 @@ export default (constant, canvas, ui, camera) => {
     }
     if(animations[currentAnimation]){
       if(!flipped)
-        engine.drawImg(
-          animations[currentAnimation][index],
-          bounds.x * camera.getZoom() + camera.getPosition().x,
-          bounds.y * camera.getZoom() + camera.getPosition().y,
-          bounds.width * camera.getZoom(),
-          bounds.height * camera.getZoom()
-        )
+        if(!spritesheet)
+          engine.drawImg(
+            animations[currentAnimation][index],
+            bounds.x * camera.getZoom() + camera.getPosition().x,
+            bounds.y * camera.getZoom() + camera.getPosition().y,
+            bounds.width * camera.getZoom(),
+            bounds.height * camera.getZoom()
+          )
+        else
+          engine.drawImg(
+            spritesheet,
+            bounds.x * camera.getZoom() + camera.getPosition().x,
+            bounds.y * camera.getZoom() + camera.getPosition().y,
+            bounds.width * camera.getZoom(),
+            bounds.height * camera.getZoom(),
+            false,
+            ...animations[currentAnimation][index]
+          )
       else
         engine.inReverse(() => {
           engine.drawImg(
@@ -113,6 +133,7 @@ export default (constant, canvas, ui, camera) => {
     }
     if(outline){
       engine.drawOutline(
+        outlineColor,
         bounds.x * camera.getZoom() + camera.getPosition().x,
         bounds.y * camera.getZoom() + camera.getPosition().y,
         bounds.width * camera.getZoom(),
@@ -158,6 +179,10 @@ export default (constant, canvas, ui, camera) => {
     }
     updateSpriteBounds()
     checkBounds()
+    
+    const info = camera.followInfo()
+    if(info.isFollowing && info.followTarget === exportable)
+      camera.panToSprite( info.followTarget, info.followFrames )
   }
 
   const getOffset = () => offset
@@ -215,8 +240,8 @@ export default (constant, canvas, ui, camera) => {
   }
 
   const checkBounds = () => {
-    const maxX = constant.RESOLUTION[0]
-    const maxY = constant.RESOLUTION[1]
+    const maxX = getOptions().RESOLUTION[0]
+    const maxY = getOptions().RESOLUTION[1]
     if(bounds.x < 0)
       bounds.x = 0
     if(bounds.y < 0)
@@ -231,7 +256,10 @@ export default (constant, canvas, ui, camera) => {
 
   // util
 
-  const setOutline = b => outline = b
+  const setOutline = (b, color) => {
+    outline = b
+    if(b && color) outlineColor = color
+  }
   const setBackground = (b, color) => {
     background = b
     if(b && color) backgroundColor = color
@@ -243,8 +271,8 @@ export default (constant, canvas, ui, camera) => {
   const scale = (x, y) => {
     const screenBounds = canvas.getBoundingClientRect()
     return {
-      x: x * (screenBounds.width / constant.RESOLUTION[0]),
-      y: y * (screenBounds.height / constant.RESOLUTION[1])
+      x: x * (screenBounds.width / getOptions().RESOLUTION[0]),
+      y: y * (screenBounds.height / getOptions().RESOLUTION[1])
     }
   }
   const trackUI = (id, tag, offset) => {

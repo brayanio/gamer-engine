@@ -1,4 +1,4 @@
-export default (constant, imgManager, init) => {
+export default (getOptions, imgManager, init) => {
   return () => {
     let sprites = [], prefabs = {},
     preRenderFN, postRenderFN
@@ -37,8 +37,9 @@ export default (constant, imgManager, init) => {
       })
       Object.values(prefabs).forEach(prefab => 
         prefab.animations.forEach(animation => {
-          const ar = [...animation]
+          let ar = [...animation]
           ar.shift()
+          ar = ar.filter(s => typeof s === 'string')
           imgAr.push(...ar)
         })
       )

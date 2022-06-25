@@ -2,7 +2,7 @@ import loadScreen from "./load-screen.js"
 
  let el
 
-export default () => {
+export default (container) => {
   if(!el){
     el = document.createElement('div')
     el.classList.add('gmr-img-manager')
@@ -41,7 +41,6 @@ export default () => {
   }
 
   const loadImg = (...srcArray) => {
-    // loadScreen(onImgLoad)
     let filteredSrcArray = [...new Set(srcArray)]
     filteredSrcArray = filteredSrcArray.filter(src => !el.querySelector(`[src="${src}"]`))
     filteredSrcArray = filteredSrcArray.filter(src => loadedImgs.indexOf(src) === -1)
@@ -51,6 +50,7 @@ export default () => {
       return null
     }
     expected += filteredSrcArray.length
+    loadScreen(container, onImgLoad)
     filteredSrcArray.forEach(src => {
       const img = document.createElement('img')
       img.src = src

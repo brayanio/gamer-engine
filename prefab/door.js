@@ -5,5 +5,5 @@ export default gmr.prefab(
   sprite => {
     sprite.setOutline(true)
   },
-  ['Idle', './asset/door.png']
+  gmr.animation('Idle', './asset/door.png')
 )

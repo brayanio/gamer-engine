@@ -32,14 +32,12 @@ export default (CONSTANT) => {
     events = []
   }
 
-  const isMoveActive = () => (key.up || key.down || key.left || key.right)
-
   const getKey = () => key
   const setKeyState = (k, state) => key[k] = state
 
   return { 
     startKeyListener, getKey, setKeyState, 
-    isMoveActive, addKeyFn, removeKeyFn, 
+    addKeyFn, removeKeyFn, 
     clearKeyFn, addKeyUpFn, removeKeyUpFn,
     clearKeyUpFn
   }

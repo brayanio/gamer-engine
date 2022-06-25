@@ -1,5 +1,6 @@
 import gmr from '../gmr.js'
 import behaviorMovable from '../behavior/moveable.js'
+import prefabBG from '../prefab/bg.js'
 import prefabDoor from '../prefab/door.js'
 import prefabGreenMage from '../prefab/green-mage.js'
 import uiMovepad from '../ui/move-pad.js'
@@ -9,10 +10,13 @@ import uiZoomBtns from '../ui/zoom-btns.js'
 
 export default gmr.scene( scene => {
   //init prefabs
+  gmr.setResolution(1920*2, 1080*2)
   scene.addPrefab(
     prefabDoor,
-    prefabGreenMage
+    prefabGreenMage,
+    prefabBG
   )
+  scene.spawn( 'bg', 0, 0, ...gmr.getOptions().RESOLUTION)
   
   const player = scene.spawn( 'green-mage', 825, 125, 300, 300 )
   behaviorMovable.attach( player )
@@ -23,7 +27,7 @@ export default gmr.scene( scene => {
   //init ui
   uiLogo()
   uiMovepad()
-  uiZoomBtns()
+  uiZoomBtns( player )
 
   //on pre-render
   scene.onPreRender(() => {
@@ -34,6 +38,9 @@ export default gmr.scene( scene => {
     if( player.isTouching( doorTest ) ) {
       gmr.closeScene()
       gmr.openScene( sceneTest() )
+      gmr.camera.setZoom(1)
+      gmr.camera.clearFollow()
+      gmr.camera.pan(0,0, gmr.getOptions().FRAMES_PER_SECOND * .1)
     }
   })
 })

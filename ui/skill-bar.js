@@ -1,6 +1,6 @@
 import gmr from '../gmr.js'
 
-export default gmr.createUI( 'skillbar', null,
+export default gmr.ui.component( 'skillbar', null,
   (el, ...skills) => skills.forEach(skill => {
     const button = document.createElement('button')
     button.onclick = skill.fn

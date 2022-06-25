@@ -9,13 +9,13 @@ el.appendChild(label)
 
 // document.body.appendChild(el)
 
-export default onImgLoad => {
-  document.body.appendChild(el)
+export default (container, onImgLoad) => {
+  container.appendChild(el)
   onImgLoad((loading, expected, percentage) => {
     progress.setAttribute('value', loading)
     progress.setAttribute('max', expected)
     label.innerText = Math.ceil(percentage * 100) + '%'
     if(percentage === 1 || !percentage)
-      document.body.removeChild(el)
+      container.removeChild(el)
   })
 }
