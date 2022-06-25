@@ -4,6 +4,7 @@
 > > gmrInstance.behavior
 >
 > >gmrBehavior.attach
+> ---
 
 > ## gmrInstance.behavior | gmrBehavior
 > ```
@@ -27,6 +28,7 @@
 >
 > ...requires | gmrBehavior
 > * Any required behaviors will be attached to the sprite before the parent behavior attaches.
+> ---
 
 > ## gmrBehavior.attach | undefined
 > ```
@@ -37,3 +39,4 @@
 >
 > props | any
 > * Arguments passed to the initFN of the behavior
+> ---

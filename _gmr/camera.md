@@ -22,18 +22,23 @@
 > > gmrInstance.camera.followInfo
 >
 > > gmrInstance.camera.shake
+> ---
 
 > ## gmrInstance.camera.getPosition | {x: number, y: number}
 > ```
 > const pos = gmrInstance.camera.getPosition()
 > ```
+> ---
 
 > ## gmrInstance.camera.getZoom | number
 > ```
 > const zoomVal = gmrInstance.camera.getZoom()
 > ```
+> ---
+
 
 > ## gmrInstance.camera.setPosition | undefined
 >```
 > gmrInstance.camera.setPosition( x, y )
 >```
+> ---
