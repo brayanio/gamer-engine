@@ -1,18 +1,21 @@
-# Behavior
+> # Behavior
+> Behaviors serve to add modular functionality to sprites.
+>
+> > gmrInstance.behavior
+>
+> >gmrBehavior.attach
 
-Behaviors serve to add modular functionality to sprites.
-
-```
-const behavior = gmrInstance.behavior(
-  name, 
-  cloneObj, 
-  initFN, 
-  ...requires 
-)
-```
-> # gmrInstance.behavior | gmrBehavior
+> ## gmrInstance.behavior | gmrBehavior
+> ```
+> const behavior = gmrInstance.behavior(
+>  name, 
+>  cloneObj, 
+>  initFN, 
+>  ...requires 
+> )
+> ```
 > name | string
-> * Unique behavior name used to avoid adding the same behavior multiple times.
+> * A unique name used to avoid adding the same behavior multiple times.
 >
 > cloneObj | object
 > * Adds a clone of each key value pair to the attached sprite.
@@ -25,11 +28,10 @@ const behavior = gmrInstance.behavior(
 > ...requires | gmrBehavior
 > * Any required behaviors will be attached to the sprite before the parent behavior attaches.
 
-```
-behavior.attach( sprite, ...props )
-```
-
-> # gmrBehavior.attach | undefined
+> ## gmrBehavior.attach | undefined
+> ```
+> behavior.attach( sprite, ...props )
+> ```
 > sprite | gmrSprite
 > * Target sprite to add the behavior to.
 >
