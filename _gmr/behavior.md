@@ -1,12 +1,12 @@
 > # Behavior
 > Behaviors serve to add modular functionality to sprites.
 >
-> > gmrInstance.behavior
+> > [`gmrInstance.behavior`](#behavior--gmrbehavior)
 >
-> >gmrBehavior.attach
+> > [`gmrBehavior.attach`](#attach--undefined)
 > ---
 
-> ## gmrInstance.behavior | gmrBehavior
+> ## behavior | `gmrBehavior`
 > ```
 > const behavior = gmrInstance.behavior(
 >  name, 
@@ -24,13 +24,13 @@
 >
 > initFN | function
 > * Run a function that passes the sprite as the first argument.
-> * Any arguments passed to the 'behavior.attach' will be passed to the initFN as well.
+> * Any arguments passed to the [`behavior.attach`](#gmrbehaviorattach--undefined) will be passed to the initFN as well.
 >
 > ...requires | gmrBehavior
 > * Any required behaviors will be attached to the sprite before the parent behavior attaches.
 > ---
 
-> ## gmrBehavior.attach | undefined
+> ## attach | `undefined`
 > ```
 > behavior.attach( sprite, ...props )
 > ```
