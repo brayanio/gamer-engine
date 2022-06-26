@@ -1,4 +1,5 @@
-export default (getOptions, canvas, ui, camera) => {
+export default () => {
+  let instance
   let animations = {}
   let index = 0, animationPriority = 0, animationBuffer = 0, animationBufferIndex = 0
   let currentAnimation
@@ -78,27 +79,31 @@ export default (getOptions, canvas, ui, camera) => {
 
   // engine
 
-  const load = (engine, imgAr) => {
-    if(spritesheet)
-      imgAr.push(spritesheet)
-    else 
-      Object.values(animations).forEach(imgArray =>
-        imgAr.push( ...imgArray )
-      )
-    sprites.forEach(sprite => {
-      sprite.load( engine, imgAr )
-    })
+  const load = (app, imgAr) => {
+    instance = app
+    if(imgAr){
+      if(spritesheet)
+        imgAr.push(spritesheet)
+      else 
+        Object.values(animations).forEach(imgArray =>
+          imgAr.push( ...imgArray )
+        )
+      sprites.forEach(sprite => {
+        sprite.load( instance, imgAr )
+      })
+    }
   }
 
   const render = engine => {
+    if(!instance) return null
     if(hide) return null
     if(background){
       engine.drawRect(
         backgroundColor,
-        bounds.x * camera.getZoom() + camera.getPosition().x,
-        bounds.y * camera.getZoom() + camera.getPosition().y,
-        bounds.width * camera.getZoom(),
-        bounds.height * camera.getZoom()
+        bounds.x * instance.camera.getZoom() + instance.camera.getPosition().x,
+        bounds.y * instance.camera.getZoom() + instance.camera.getPosition().y,
+        bounds.width * instance.camera.getZoom(),
+        bounds.height * instance.camera.getZoom()
       )
     }
     if(animations[currentAnimation]){
@@ -106,18 +111,18 @@ export default (getOptions, canvas, ui, camera) => {
         if(!spritesheet)
           engine.drawImg(
             animations[currentAnimation][index],
-            bounds.x * camera.getZoom() + camera.getPosition().x,
-            bounds.y * camera.getZoom() + camera.getPosition().y,
-            bounds.width * camera.getZoom(),
-            bounds.height * camera.getZoom()
+            bounds.x * instance.camera.getZoom() + instance.camera.getPosition().x,
+            bounds.y * instance.camera.getZoom() + instance.camera.getPosition().y,
+            bounds.width * instance.camera.getZoom(),
+            bounds.height * instance.camera.getZoom()
           )
         else
           engine.drawImg(
             spritesheet,
-            bounds.x * camera.getZoom() + camera.getPosition().x,
-            bounds.y * camera.getZoom() + camera.getPosition().y,
-            bounds.width * camera.getZoom(),
-            bounds.height * camera.getZoom(),
+            bounds.x * instance.camera.getZoom() + instance.camera.getPosition().x,
+            bounds.y * instance.camera.getZoom() + instance.camera.getPosition().y,
+            bounds.width * instance.camera.getZoom(),
+            bounds.height * instance.camera.getZoom(),
             false,
             ...animations[currentAnimation][index]
           )
@@ -125,10 +130,10 @@ export default (getOptions, canvas, ui, camera) => {
         engine.inReverse(() => {
           engine.drawImg(
             animations[currentAnimation][index],
-            -bounds.x * camera.getZoom() - camera.getPosition().x,
-            bounds.y * camera.getZoom() + camera.getPosition().y,
-            bounds.width * camera.getZoom(),
-            bounds.height * camera.getZoom(),
+            -bounds.x * instance.camera.getZoom() - instance.camera.getPosition().x,
+            bounds.y * instance.camera.getZoom() + instance.camera.getPosition().y,
+            bounds.width * instance.camera.getZoom(),
+            bounds.height * instance.camera.getZoom(),
             true
           )
         })
@@ -136,10 +141,10 @@ export default (getOptions, canvas, ui, camera) => {
     if(outline){
       engine.drawOutline(
         outlineColor,
-        bounds.x * camera.getZoom() + camera.getPosition().x,
-        bounds.y * camera.getZoom() + camera.getPosition().y,
-        bounds.width * camera.getZoom(),
-        bounds.height * camera.getZoom()
+        bounds.x * instance.camera.getZoom() + instance.camera.getPosition().x,
+        bounds.y * instance.camera.getZoom() + instance.camera.getPosition().y,
+        bounds.width * instance.camera.getZoom(),
+        bounds.height * instance.camera.getZoom()
       )
     }
     sprites.forEach(sprite => {
@@ -185,9 +190,11 @@ export default (getOptions, canvas, ui, camera) => {
     updateSpriteBounds()
     checkBounds()
     
-    const info = camera.followInfo()
-    if(info.isFollowing && info.followTarget === exportable)
-      camera.panToSprite( info.followTarget, info.followFrames )
+    if(instance){
+      const info = instance.camera.followInfo()
+      if(info.isFollowing && info.followTarget === exportable)
+        instance.camera.panToSprite( info.followTarget, info.followFrames )
+    }
   }
 
   const getOffset = () => offset
@@ -245,8 +252,9 @@ export default (getOptions, canvas, ui, camera) => {
   }
 
   const checkBounds = () => {
-    const maxX = getOptions().RESOLUTION[0]
-    const maxY = getOptions().RESOLUTION[1]
+    if(!instance) return null
+    const maxX = instance.getOptions().RESOLUTION[0]
+    const maxY = instance.getOptions().RESOLUTION[1]
     if(bounds.x < 0)
       bounds.x = 0
     if(bounds.y < 0)
@@ -270,14 +278,14 @@ export default (getOptions, canvas, ui, camera) => {
     if(b && color) backgroundColor = color
   }
   
-  // ui
+  // ui 
 
   let elements = {}
   const scale = (x, y) => {
-    const screenBounds = canvas.getBoundingClientRect()
+    const screenBounds = instance.canvas.el.getBoundingClientRect()
     return {
-      x: x * (screenBounds.width / getOptions().RESOLUTION[0]),
-      y: y * (screenBounds.height / getOptions().RESOLUTION[1])
+      x: x * (screenBounds.width / instance.getOptions().RESOLUTION[0]),
+      y: y * (screenBounds.height / instance.getOptions().RESOLUTION[1])
     }
   }
   const trackUI = (id, tag, offset) => {
@@ -293,11 +301,12 @@ export default (getOptions, canvas, ui, camera) => {
       }
       elements[id] = el
       updateUI()
-      ui.appendChild(el)
+      instance.ui.el.appendChild(el)
       return el
     }
   }
   const updateUI = () => {
+    if(!instance) return null
     Object.values(elements).forEach(el => {
       const offset = {
         x: parseInt(el.getAttribute('offset-x') || '0'),
@@ -305,10 +314,10 @@ export default (getOptions, canvas, ui, camera) => {
         width: parseInt(el.getAttribute('offset-width') || '0'),
         height: parseInt(el.getAttribute('offset-height') || '0')
       }
-      el.style.top = scale(0, bounds.y + offset.y).y  * camera.getZoom() + scale(0, camera.getPosition().y).y + 'px'
-      el.style.left = scale(bounds.x + offset.x, 0).x  * camera.getZoom() + scale(camera.getPosition().x, 0).x + 'px'
-      el.style.width = scale(bounds.width + offset.width, 0).x  * camera.getZoom() + 'px'
-      el.style.height = scale(0, bounds.height + offset.height).y  * camera.getZoom() + 'px'
+      el.style.top = scale(0, bounds.y + offset.y).y  * instance.camera.getZoom() + scale(0, instance.camera.getPosition().y).y + 'px'
+      el.style.left = scale(bounds.x + offset.x, 0).x  * instance.camera.getZoom() + scale(instance.camera.getPosition().x, 0).x + 'px'
+      el.style.width = scale(bounds.width + offset.width, 0).x  * instance.camera.getZoom() + 'px'
+      el.style.height = scale(0, bounds.height + offset.height).y  * instance.camera.getZoom() + 'px'
       if(hide){
         el.classList.add('d-none')
       }
@@ -321,7 +330,7 @@ export default (getOptions, canvas, ui, camera) => {
     id.forEach(id => {
       let el = elements[id]
       if(el) {
-        ui.removeChild(el)
+        instance.ui.el.removeChild(el)
         delete elements[id]
       }
     })
@@ -338,6 +347,9 @@ export default (getOptions, canvas, ui, camera) => {
     parent = undefined
   }
 
+  // getInstance
+  const getInstance = () => instance
+
   const exportable = { isSprite: true,
     setAnimation, addAnimation, load, render,
     postRender, move, flip, getBounds, checkBounds,
@@ -346,7 +358,7 @@ export default (getOptions, canvas, ui, camera) => {
     trackUI, updateUI, getUI, clearUI,
     getSize, getPosition, isTouching, setParent, destroy,
     addSprite, removeSprite, setOffset, getParent, getOffset,
-    children, setHide, setAnimationBuffer
+    children, setHide, setAnimationBuffer, getInstance
   }
 
   return exportable

@@ -1,4 +1,4 @@
-import gmr from '../gmr.js'
+import gmr from '../_gmr/gmr.js'
 import animations from '../asset/progress/progress.js'
 
 export default gmr.behavior(

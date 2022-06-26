@@ -1,4 +1,4 @@
-export default (getOptions, imgManager) => {
+export default (imgManager, getOptions) => {
   let canvas = document.createElement('canvas')
   canvas.classList.add('gmr-canvas')
   canvas.setAttribute('width', getOptions().RESOLUTION[0])

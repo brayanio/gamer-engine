@@ -1,7 +1,7 @@
-import gmr from '../gmr.js'
+import gmr from '../_gmr/gmr.js'
 
 export default gmr.ui.component( 'skillbar', null,
-  (el, ...skills) => skills.forEach(skill => {
+  (app, el, ...skills) => skills.forEach(skill => {
     const button = document.createElement('button')
     button.onclick = skill.fn
     const img = document.createElement('img')
@@ -10,7 +10,7 @@ export default gmr.ui.component( 'skillbar', null,
     const label = document.createElement('label')
     label.innerText = skill.key
     button.appendChild(label)
-    gmr.addKeyFn(skill.key, () => button.click())
-    el.appendChild(button)
+    gmr.keyManager.addKeyFn(skill.key, () => button.click())
+    el.component.appendChild(button)
   })
 )

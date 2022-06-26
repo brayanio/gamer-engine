@@ -1,4 +1,4 @@
-import gmr from '../gmr.js'
+import gmr from '../_gmr/gmr.js'
 
 export default gmr.ui.component( 'movepad',
   `
@@ -11,7 +11,7 @@ export default gmr.ui.component( 'movepad',
       <button id="right">Right</button>
     </div>
   `,
-  (el) => {
+  (app, el) => {
 
     const keybinds = {
       up: 'w',
@@ -20,14 +20,14 @@ export default gmr.ui.component( 'movepad',
       right: 'd'
     }
 
-    gmr.clearKeyFn()
+    gmr.keyManager.clearKeyFn()
     ;['up', 'left', 'right', 'down'].forEach( key => {
-      gmr.ui.query(el, '#'+key).onmousedown = () => gmr.setKeyState(key, true)
-      gmr.ui.query(el, '#'+key).onmouseup = () => gmr.setKeyState(key, false)
-      gmr.ui.query(el, '#'+key).ontouchstart = () => gmr.setKeyState(key, true)
-      gmr.ui.query(el, '#'+key).ontouchend = () => gmr.setKeyState(key, false)
-      gmr.addKeyFn(keybinds[key], () => gmr.setKeyState(key, true))
-      gmr.addKeyUpFn(keybinds[key], () => gmr.setKeyState(key, false))
+      el[key].onmousedown = () => gmr.keyManager.setKeyState(key, true)
+      el[key].onmouseup = () => gmr.keyManager.setKeyState(key, false)
+      el[key].ontouchstart = () => gmr.keyManager.setKeyState(key, true)
+      el[key].ontouchend = () => gmr.keyManager.setKeyState(key, false)
+      gmr.keyManager.addKeyFn(keybinds[key], () => gmr.keyManager.setKeyState(key, true))
+      gmr.keyManager.addKeyUpFn(keybinds[key], () => gmr.keyManager.setKeyState(key, false))
     })
   }
 )

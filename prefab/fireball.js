@@ -1,10 +1,10 @@
-import gmr from '../gmr.js'
+import gmr from '../_gmr/gmr.js'
 import animations from '../asset/fireball/fireball.js'
 import behaviorProjectile from '../behavior/projectile.js'
 
 export default gmr.prefab(
   'fireball', 
-  sprite => {
+  (sprite, instance) => {
     sprite.setAnimation('Idle')
     // sprite.setOutline(true)
     behaviorProjectile.attach( sprite )
@@ -15,8 +15,8 @@ export default gmr.prefab(
       if(target.health <= 0)
         target.destroy()
       sprite.destroy()
-      gmr.camera.shake()
-      gmr.renderLoop.delay( gmr.getOptions().FRAMES_PER_SECOND * .25, () => gmr.camera.shake(false))
+      instance.camera.shake()
+      instance.renderLoop.delay( instance.getOptions().FRAMES_PER_SECOND * .25, () => instance.camera.shake(false))
     })
 
     sprite.setAnimationBuffer(2)

@@ -1,7 +1,7 @@
-import gmr from '../gmr.js'
+import gmr from '../_gmr/gmr.js'
 
 const isMoveActive = () => {
-  let key = gmr.getKey()
+  let key = gmr.keyManager.getKey()
   return (key.up || key.down || key.left || key.right)
 }
 
@@ -14,15 +14,15 @@ export default gmr.behavior(
     checkUserMovement: sprite => {
       //move
       const speed = sprite.speed
-      if( gmr.getKey().up ) 
+      if( gmr.keyManager.getKey().up ) 
         sprite.move(0, -speed)
-      if( gmr.getKey().down ) 
+      if( gmr.keyManager.getKey().down ) 
         sprite.move(0, speed)
-      if( gmr.getKey().left ) {
+      if( gmr.keyManager.getKey().left ) {
         sprite.move(-speed, 0)
         sprite.flip(true)
       }
-      if( gmr.getKey().right ) {
+      if( gmr.keyManager.getKey().right ) {
         sprite.move(speed, 0)
         sprite.flip(false)
       }

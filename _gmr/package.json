@@ -1,6 +1,6 @@
 {
   "name": "gmr",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "JS 2d canvas engine",
   "main": "gmr.js",
   "scripts": {

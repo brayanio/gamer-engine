@@ -1,10 +1,16 @@
-export default (getOptions, imgManager, init) => {
+import gmrImgManager from "./gmrImgManager.js"
+
+export default (init) => {
   return () => {
     let sprites = [], prefabs = {},
-    preRenderFN, postRenderFN
+    preRenderFN, postRenderFN,
+    instance
   
     const addPrefab = (...prefab) => {
-      prefab.forEach(p => prefabs[p.name] = p)
+      prefab.forEach(p => {
+        prefabs[p.name] = p
+        p.load( instance )
+      })
     }
 
     const removePrefab = name => {
@@ -13,7 +19,10 @@ export default (getOptions, imgManager, init) => {
 
     const addSprite = (...sprite) => {
       sprites.push(...sprite)
-      sprite.forEach(s => s.setParent(exportable))
+      sprite.forEach(s => {
+        s.setParent(exportable)
+        s.load(instance)
+      })
     }
   
     const removeSprite = sprite => {
@@ -23,6 +32,7 @@ export default (getOptions, imgManager, init) => {
     const spawn = (name, x, y, width, height, parent) => {
       if(prefabs[name]){
         const sprite = prefabs[name].sprite(x, y, width, height)
+        sprite.load(instance)
         sprites.push(sprite)
         if(!parent) sprite.setParent( exportable )
         else sprite.setParent( parent )
@@ -30,10 +40,12 @@ export default (getOptions, imgManager, init) => {
       } else console.error(`No prefab named "${name}" has been added to the scene.`)
     }
   
-    const load = engine => {
+    const load = (app) => {
+      instance = app
+      if(init) init(exportable, instance)
       let imgAr = []
       sprites.forEach(sprite => {
-        sprite.load(engine, imgAr)
+        sprite.load(instance, imgAr)
       })
       Object.values(prefabs).forEach(prefab => 
         prefab.animations.forEach(animation => {
@@ -44,7 +56,7 @@ export default (getOptions, imgManager, init) => {
         })
       )
 
-      imgManager.loadImg(...imgAr)
+      instance.imgManager.loadImg(instance.container, ...imgAr)
       onresize = () => sprites.forEach(sprite => sprite.updateUI())
     }
     
@@ -66,13 +78,18 @@ export default (getOptions, imgManager, init) => {
         sprite.updateUI()
       })
     }
+
+    const loadUI = (fn, ...props) => {
+      const el = fn( instance, ...props )
+      instance.ui.el.appendChild(el)
+    }
     
     const exportable = {
       render, postRender, addSprite, removeSprite, 
       load, onPreRender, onPostRender,
-      addPrefab, removePrefab, spawn, updateUI
+      addPrefab, removePrefab, spawn, updateUI, loadUI
     }
-    if(init) init(exportable)
+    
     return exportable
   }
 }

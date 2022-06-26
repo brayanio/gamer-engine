@@ -1,4 +1,4 @@
-import gmr from '../gmr.js'
+import gmr from '../_gmr/gmr.js'
 import animations from '../asset/red-mage/red-mage.js'
 import prefabProgress from './progress.js'
 import behaviorStats from '../behavior/stats.js'

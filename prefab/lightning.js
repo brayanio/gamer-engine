@@ -1,10 +1,10 @@
-import gmr from '../gmr.js'
+import gmr from '../_gmr/gmr.js'
 import animations from '../asset/lightning/lightning.js'
 import behaviorProjectile from '../behavior/projectile.js'
 
 export default gmr.prefab(
   'lightning', 
-  sprite => {
+  (sprite, app) => {
     sprite.setAnimation('Idle')
     // sprite.setOutline(true)
     behaviorProjectile.attach( sprite )
@@ -15,8 +15,8 @@ export default gmr.prefab(
       if(target.health <= 0)
         target.destroy()
       sprite.destroy()
-      gmr.camera.shake()
-      gmr.renderLoop.delay( gmr.getOptions().FRAMES_PER_SECOND * .1, () => gmr.camera.shake(false))
+      app.camera.shake()
+      app.renderLoop.delay( app.getOptions().FRAMES_PER_SECOND * .1, () => app.camera.shake(false))
     })
 
     sprite.setAnimationBuffer(1)

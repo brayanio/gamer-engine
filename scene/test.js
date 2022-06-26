@@ -1,4 +1,4 @@
-import gmr from '../gmr.js'
+import gmr from '../_gmr/gmr.js'
 import behaviorMovable from '../behavior/moveable.js'
 import behaviorCastFireball from '../behavior/cast-fireball.js'
 import behaviorCastLightning from '../behavior/cast-lightning.js'
@@ -14,9 +14,9 @@ import uiSkillbar from '../ui/skill-bar.js'
 import uiLogo from '../ui/logo.js'
 import sceneTestTwo from '../scene/test-two.js'
 
-export default gmr.scene( scene => {
+export default gmr.scene( ( scene, app ) => {
   //init prefabs
-  gmr.setResolution(1920, 1080)
+  app.setResolution(1920, 1080)
   scene.addPrefab(
     prefabRedMage,
     prefabGreenMage,
@@ -26,7 +26,7 @@ export default gmr.scene( scene => {
     prefabDoor,
     prefabBG
   )
-  scene.spawn( 'bg', 0, 0, ...gmr.getOptions().RESOLUTION)
+  scene.spawn( 'bg', 0, 0, ...app.getOptions().RESOLUTION)
   
   const enemy = scene.spawn( 'red-mage', 75, 375, 300, 300 )
   const player = scene.spawn( 'green-mage', 1220, 500, 300, 300 )
@@ -42,9 +42,9 @@ export default gmr.scene( scene => {
   let projectiles = []
 
   //init ui
-  uiLogo()
-  uiMovepad()
-  uiSkillbar(
+  scene.loadUI( uiLogo )
+  scene.loadUI( uiMovepad )
+  scene.loadUI( uiSkillbar, 
     {img: 'magicianSkill3', key: '1', fn: () => {
       if(!enemy.getParent()) return null
       enemy.targetSelect()
@@ -74,8 +74,8 @@ export default gmr.scene( scene => {
 
   scene.onPostRender(() => {
     if( player.isTouching( doorTestTwo ) ) {
-      gmr.closeScene()
-      gmr.openScene( sceneTestTwo() )
+      app.closeScene()
+      app.openScene( sceneTestTwo() )
     }
   })
 

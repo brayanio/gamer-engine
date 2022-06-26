@@ -30,6 +30,7 @@ The best way to organize gmr is to create lots of focused one-goal specific beha
 
 ## Documentation
 
+* gmr
 * gmrAnimation
 * gmrBehavior
 * gmrCamera

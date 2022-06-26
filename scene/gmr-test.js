@@ -1,10 +1,10 @@
-import gmr from '../gmr.js'
+import gmr from '../_gmr/gmr.js'
 import behaviorMovable from '../behavior/moveable.js'
 import prefabGreenMage from '../prefab/gmr-test.js'
 import uiLogo from '../ui/logo.js'
 import uiMovepad from '../ui/move-pad.js'
 
-export default gmr.scene( scene => {
+export default gmr.scene( ( scene, app ) => { 
 
   scene.addPrefab(
     prefabGreenMage
@@ -13,11 +13,9 @@ export default gmr.scene( scene => {
   const player = scene.spawn('green-mage', 100, 100, 150, 200)
   behaviorMovable.attach( player )
   player.setSpeed( 30 )
-
-  console.log(player.getBounds())
   
-  uiLogo()
-  uiMovepad()
+  scene.loadUI( uiLogo )
+  scene.loadUI( uiMovepad )
 
   //on pre-render
   scene.onPreRender(() => {

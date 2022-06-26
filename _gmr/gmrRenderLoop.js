@@ -1,6 +1,6 @@
 import guid from './guid.js'
 
-const setup = (getOptions, camera) => {
+export default (getOptions, camera) => {
   let isOn = false
   let renderFN
   let delays = []
@@ -57,5 +57,3 @@ const onRenderLoop = (getFn, isRendering, getOptions, camera, getDelays, filterD
   } 
   render(isRendering().loopId)
 }
-
-export default setup

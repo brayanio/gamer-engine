@@ -1,4 +1,4 @@
-import gmr from '../gmr.js'
+import gmr from '../_gmr/gmr.js'
 
 const emptyfn = () => {}
 export default gmr.behavior(
