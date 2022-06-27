@@ -4,11 +4,9 @@ export default (init) => {
     preRenderFN, postRenderFN,
     instance
   
-    const addPrefab = (...prefab) => {
-      prefab.forEach(p => 
-        prefabs[p.name] = p(instance)
-      )
-    }
+    const addPrefab = (...prefab) => prefab.forEach(p => 
+      prefabs[p.name] = p(instance)
+    )
 
     const removePrefab = name => {
       delete prefabs[name]
