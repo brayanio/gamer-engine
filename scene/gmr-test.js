@@ -10,7 +10,7 @@ export default gmr.scene( ( scene, app ) => {
     prefabGreenMage
   )
 
-  const player = scene.spawn('green-mage', 100, 100, 150, 200)
+  const player = scene.spawn('green-mage', [100, 100, 150, 200])
   behaviorMovable.attach( player )
   player.setSpeed( 30 )
   

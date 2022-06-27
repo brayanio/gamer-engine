@@ -1,6 +1,6 @@
 import gmr from './_gmr/gmr.js'
 import sceneTest from './scene/test.js'
-import sceneTestThree from './scene/test-three.js'
+// import sceneTestThree from './scene/test-three.js'
 
 const div = document.body.querySelector('#app')
 

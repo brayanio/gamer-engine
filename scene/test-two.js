@@ -16,13 +16,13 @@ export default gmr.scene( ( scene, app ) => {
     prefabGreenMage,
     prefabBG
   )
-  scene.spawn( 'bg', 0, 0, ...app.getOptions().RESOLUTION)
+  scene.spawn( 'bg', [0, 0, ...app.getOptions().RESOLUTION])
   
-  const player = scene.spawn( 'green-mage', 400, 1500, 300, 300 )
+  const player = scene.spawn( 'green-mage', [400, 1500, 300, 300] )
   behaviorMovable.attach( player )
   player.setSpeed( 18 )
 
-  const doorTest = scene.spawn('door', 0, 1500, 200, 400)
+  const doorTest = scene.spawn('door', [0, 1500, 200, 400])
 
   //init ui
   scene.loadUI( uiLogo )

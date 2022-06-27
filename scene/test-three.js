@@ -15,10 +15,10 @@ export default gmr.scene( ( scene, app ) => {
     // prefabRedMage,
     prefabBG
   )
-  scene.spawn( 'bg', 0, 0, ...gmr.getOptions().RESOLUTION)
+  scene.spawn( 'bg', [0, 0, ...gmr.getOptions().RESOLUTION])
   
   // const enemy = scene.spawn( 'red-mage', 1000, 325, 300, 300 )
-  const player = scene.spawn( 'chicken', 825, 125, 100, 100 )
+  const player = scene.spawn( 'chicken', [825, 125, 100, 100] )
   behaviorMovable.attach( player )
   player.setSpeed( 30 )
 
