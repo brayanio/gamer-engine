@@ -1,5 +1,3 @@
-import gmrImgManager from "./gmrImgManager.js"
-
 export default (init) => {
   return () => {
     let sprites = [], prefabs = {},
@@ -7,10 +5,9 @@ export default (init) => {
     instance
   
     const addPrefab = (...prefab) => {
-      prefab.forEach(p => {
-        prefabs[p.name] = p
-        p.load( instance )
-      })
+      prefab.forEach(p => 
+        prefabs[p.name] = p(instance)
+      )
     }
 
     const removePrefab = name => {
