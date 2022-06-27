@@ -64,13 +64,19 @@ export default (container, fn) => {
     ui.el.classList[b?'add':'remove']('fullscreen')
   }
 
+  const sprite = () => {
+    let s = gmrSprite()
+    s.load(exportable)
+    return s
+  }
+
   const exportable = {
     container, canvas, imgManager, camera, renderLoop, ui,
     getOptions,
     scene: init => gmrScene(getOptions, imgManager, init), openScene, closeScene,
     prefab: (name, fn, ...animations) => gmrPrefab({getOptions, canvas: canvas.el, ui: ui.el, camera}, name, fn, ...animations),
-    sprite: () => gmrSprite({getOptions, canvas: canvas.el, ui: ui.el, camera}),
     behavior: gmrBehavior,
+    sprite,
     setResolution, setFPS, setFullscreen
   }
   
