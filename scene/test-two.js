@@ -6,9 +6,10 @@ import prefabGreenMage from '../prefab/green-mage.js'
 import uiMovepad from '../ui/move-pad.js'
 import uiLogo from '../ui/logo.js'
 import sceneTest from '../scene/test.js'
+import sceneTestThree from '../scene/test-three.js'
 import uiZoomBtns from '../ui/zoom-btns.js'
 
-export default gmr.scene( ( scene, app ) => {
+export default gmr.scene( ( scene, app, entrance ) => {
   //init prefabs
   app.setResolution(1920*2, 1080*2)
   scene.addPrefab(
@@ -16,13 +17,28 @@ export default gmr.scene( ( scene, app ) => {
     prefabGreenMage,
     prefabBG
   )
-  scene.spawn( 'bg', [0, 0, ...app.getOptions().RESOLUTION])
+  scene.spawn( 'bg', 0, 0, ...app.getOptions().RESOLUTION)
   
-  const player = scene.spawn( 'green-mage', [400, 1500, 300, 300] )
+  const playerStartPos = {
+    'left': [400, 1500, 300, 300],
+    'right': [(1920*2)-800, 500, 300, 300]
+  }
+
+  console.log(entrance)
+
+  const player = scene.spawn( 'green-mage', ...playerStartPos[entrance] )
   behaviorMovable.attach( player )
   player.setSpeed( 18 )
 
-  const doorTest = scene.spawn('door', [0, 1500, 200, 400])
+  const doorTest = scene.spawn('door', 0, 1500, 200, 400)
+  const doorTestThree = scene.spawn('door', (1920*2)-200, 500, 200, 400)
+
+  const resetCameraSettings = () => {
+    app.camera.setZoom(1)
+    app.camera.clearFollow()
+    app.camera.pan(0,0, app.getOptions().FRAMES_PER_SECOND * .1)
+    app.setFPS(60);
+  }
 
   //init ui
   scene.loadUI( uiLogo )
@@ -37,12 +53,13 @@ export default gmr.scene( ( scene, app ) => {
   scene.onPostRender(() => {
     if( player.isTouching( doorTest ) ) {
       app.closeScene()
+      resetCameraSettings()
       app.openScene( sceneTest() )
-      app.camera.setZoom(1)
-      app.camera.clearFollow()
-      app.camera.pan(0,0, app.getOptions().FRAMES_PER_SECOND * .1)
-      app.setFPS(60);
-      player.setAnimationBuffer(2)
+    }
+    if( player.isTouching( doorTestThree ) ) {
+      app.closeScene()
+      resetCameraSettings()
+      app.openScene( sceneTestThree() )
     }
   })
 })

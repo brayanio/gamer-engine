@@ -13,7 +13,6 @@ export default gmr.scene( ( scene, app ) => {
   scene.addPrefab(
     prefabWisp,
     prefabDoor,
-    // prefabChicken,
     prefabBG
   )
   scene.spawn( 'bg', 0, 0, ...app.getOptions().RESOLUTION)

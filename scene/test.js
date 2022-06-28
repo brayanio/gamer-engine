@@ -75,7 +75,7 @@ export default gmr.scene( ( scene, app ) => {
   scene.onPostRender(() => {
     if( player.isTouching( doorTestTwo ) ) {
       app.closeScene()
-      app.openScene( sceneTestTwo() )
+      app.openScene( sceneTestTwo('left') )
     }
   })
 

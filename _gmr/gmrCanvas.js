@@ -44,7 +44,7 @@ export default (imgManager, getOptions) => {
     ctx.clearRect(0, 0, getOptions().RESOLUTION[0], getOptions().RESOLUTION[1])
 
   return {
-    el: canvas, 
+    el: canvas, ctx,
     clear,
     drawOutline, drawImg, inReverse, drawRect
   }

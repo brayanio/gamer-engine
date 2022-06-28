@@ -70,6 +70,14 @@ export default (container, fn) => {
     return s
   }
 
+  let setPixelMode = bool => {
+    canvas.ctx.mozImageSmoothingEnabled = !bool;
+    canvas.ctx.webkitImageSmoothingEnabled = !bool;
+    canvas.ctx.msImageSmoothingEnabled = !bool;
+    canvas.ctx.imageSmoothingEnabled = !bool;
+    console.log('pixel mode', !bool === false)
+  }
+
   const exportable = {
     container, canvas, imgManager, camera, renderLoop, ui,
     getOptions,
@@ -77,7 +85,7 @@ export default (container, fn) => {
     prefab: (name, fn, ...animations) => gmrPrefab({getOptions, canvas: canvas.el, ui: ui.el, camera}, name, fn, ...animations),
     behavior: gmrBehavior,
     sprite,
-    setResolution, setFPS, setFullscreen
+    setResolution, setFPS, setFullscreen, setPixelMode
   }
   
   if(fn) fn(exportable)

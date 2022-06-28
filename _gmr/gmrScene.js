@@ -1,5 +1,5 @@
 export default (init) => {
-  return () => {
+  return (...props) => {
     let sprites = [], prefabs = {},
     preRenderFN, postRenderFN,
     instance
@@ -24,20 +24,20 @@ export default (init) => {
     const removeSprite = sprite => {
       sprites = sprites.filter(s => s !== sprite)
     }
-
+1
     const spawn = (name, x, y, width, height, ...props) => {
       if(prefabs[name]){
         const sprite = prefabs[name].sprite([x, y, width, height], ...props)
         sprite.load(instance)
         sprites.push(sprite)
-        if(!sprite.parent) sprite.setParent( exportable )
+        if(sprite.parent === undefined) sprite.setParent( exportable )
         return sprite
       } else console.error(`No prefab named "${name}" has been added to the scene.`)
     }
   
     const load = (app) => {
       instance = app
-      if(init) init(exportable, instance)
+      if(init) init(exportable, instance, ...props)
       let imgAr = []
       sprites.forEach(sprite => {
         sprite.load(instance, imgAr)
