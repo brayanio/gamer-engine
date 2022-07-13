@@ -9,17 +9,18 @@ export default (getOptions, camera) => {
   const onRender = fn => renderFN = fn
   const setOn = b => isOn = b
   const render = fn => {
-    loopId = guid()
-    isOn = true
-    if(fn)
-    renderFN = fn
-    onRenderLoop(
-      () => renderFN(),
-      () => {return {isOn, loopId}},
-      getOptions, camera,
-      () => delays,
-      filterDelays
-    )
+    if(fn) renderFN = fn
+    if(renderFN){
+      loopId = guid()
+      isOn = true
+      onRenderLoop(
+        () => renderFN(),
+        () => {return {isOn, loopId}},
+        getOptions, camera,
+        () => delays,
+        filterDelays
+      )
+    }
   }
   const off = () => {
     isOn = false

@@ -24,7 +24,7 @@ export default gmr.scene( ( scene, app, entrance ) => {
     'right': [(1920*2)-800, 500, 300, 300]
   }
 
-  console.log(entrance)
+  // console.log(entrance)
 
   const player = scene.spawn( 'green-mage', ...playerStartPos[entrance] )
   behaviorMovable.attach( player )

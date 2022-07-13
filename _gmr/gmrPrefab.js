@@ -1,17 +1,17 @@
 import sprite from "./gmrSprite.js"
 
 export default (name, fn, ...animations) => {
-  const newSprite = (instance, bounds, ...props) => {
+  const newSprite = (instance, x, y, width, height, ...props) => {
     const spriteObj = sprite()
     spriteObj.load(instance)
     animations.forEach(animation => 
       spriteObj.addAnimation(...animation)
     )
-    if(bounds.length) spriteObj.setBounds(...bounds)
+    spriteObj.setBounds(x, y, width, height)
     fn(spriteObj, instance, ...props)
     return spriteObj
   }
   return instance => {
-    return { name, sprite: (bounds, ...props) => newSprite(instance, bounds, ...props), animations }
+    return { name, sprite: (x, y, width, height, ...props) => newSprite(instance, x, y, width, height, ...props), animations }
   }
 }

@@ -10,7 +10,6 @@ export default gmr.behavior(
   {
     speed: 12,
     setSpeed: (sprite, n) => sprite.speed = n,
-
     checkUserMovement: sprite => {
       //move
       const speed = sprite.speed
@@ -28,9 +27,10 @@ export default gmr.behavior(
       }
     
       // set animation
-      if( isMoveActive() ) 
+      if( isMoveActive() ) {
         sprite.setAnimation('Walking')
-      else 
+        // console.log(sprite.bar.getBounds())
+      } else 
         sprite.setAnimation('Idle')
     }
   }

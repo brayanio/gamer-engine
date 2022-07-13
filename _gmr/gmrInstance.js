@@ -71,11 +71,10 @@ export default (container, fn) => {
   }
 
   let setPixelMode = bool => {
-    canvas.ctx.mozImageSmoothingEnabled = !bool;
-    canvas.ctx.webkitImageSmoothingEnabled = !bool;
-    canvas.ctx.msImageSmoothingEnabled = !bool;
-    canvas.ctx.imageSmoothingEnabled = !bool;
-    console.log('pixel mode', !bool === false)
+    canvas.ctx.mozImageSmoothingEnabled = !bool
+    canvas.ctx.webkitImageSmoothingEnabled = !bool
+    canvas.ctx.msImageSmoothingEnabled = !bool
+    canvas.ctx.imageSmoothingEnabled = !bool
   }
 
   const exportable = {

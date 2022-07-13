@@ -27,7 +27,7 @@ export default (init) => {
 1
     const spawn = (name, x, y, width, height, ...props) => {
       if(prefabs[name]){
-        const sprite = prefabs[name].sprite([x, y, width, height], ...props)
+        const sprite = prefabs[name].sprite(x, y, width, height, ...props)
         sprite.load(instance)
         sprites.push(sprite)
         if(sprite.parent === undefined) sprite.setParent( exportable )
@@ -78,9 +78,17 @@ export default (init) => {
       const el = fn( instance, ...props )
       instance.ui.el.appendChild(el)
     }
+
+    const children = () => sprites
+
+    const getSprites = () => {
+      let ar = [...sprites]
+      ar.forEach(s => ar.push(...s.getSprites()))
+      return ar
+    }
     
     const exportable = {
-      render, postRender, addSprite, removeSprite, 
+      render, postRender, addSprite, removeSprite, children, getSprites,
       load, onPreRender, onPostRender,
       addPrefab, removePrefab, spawn, updateUI, loadUI
     }

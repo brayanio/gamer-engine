@@ -8,6 +8,7 @@ export default gmr.prefab(
     behaviorProgressBar.attach( sprite )
     sprite.setAnimation('Background')
     const bar = sprite.initBar( 'Life' )
+    sprite.setOutline(true, 'red')
   },
   ...animations
 )

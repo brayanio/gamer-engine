@@ -15,7 +15,7 @@ export default (container, onImgLoad) => {
     progress.setAttribute('value', loading)
     progress.setAttribute('max', expected)
     label.innerText = Math.ceil(percentage * 100) + '%'
-    if(percentage === 1 || !percentage)
+    if((percentage === 1 || !percentage) && el.parentElement === container)
       container.removeChild(el)
   })
 }

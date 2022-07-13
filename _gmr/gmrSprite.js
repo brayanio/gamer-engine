@@ -4,7 +4,6 @@ export default () => {
   let index = 0, animationPriority = 0, animationBuffer = 0, animationBufferIndex = 0
   let currentAnimation
   let bounds = {x: 0, y: 0, width: 0, height: 0}
-  let offset = {x: 0, y: 0}
   let flipped = false
   let outline = false
   let behaviors = {}
@@ -14,6 +13,8 @@ export default () => {
   let backgroundColor = '#000000'
   let hide = false
   let spritesheet = false
+  let anchor = true
+  let debug = false
 
   // animation
 
@@ -45,7 +46,9 @@ export default () => {
 
   const setAnimationBuffer = val => animationBuffer = val
 
-  const setHide = v => hide = v
+  const setHide = v => {
+    hide = v
+  }
 
   // behavior
 
@@ -64,14 +67,15 @@ export default () => {
 
   let sprites = []
   const children = () => sprites
+  const getSprites = () => {
+      let ar = [...sprites]
+      ar.forEach(s => ar.push(...s.getSprites()))
+      return ar
+  }
   const addSprite = sprite => {
+    if(sprite.getParent() && sprite.getParent().removeSprite) sprite.getParent().removeSprite(sprite)
     sprites.push(sprite)
     sprite.setParent( exportable )
-    sprite.setOffset(
-      sprite.getBounds().x - (bounds.x + offset.x),
-      sprite.getBounds().y - (bounds.y + offset.y),
-    )
-    updateSpriteBounds()
   }
   const removeSprite = sprite => {
     sprites = sprites.filter(s => s !== sprite)
@@ -169,25 +173,22 @@ export default () => {
 
   // bounds
 
-  const updateSpriteBounds = () => {
-    sprites.forEach(sprite => {
-      sprite.setPosition(
-        bounds.x + offset.x + sprite.getOffset().x,
-        bounds.y + offset.y + sprite.getOffset().y
-      )
-    })
+  const updateSpriteBounds = (x, y) => {
+    if(x || y)
+      sprites.forEach(sprite => {
+        if(sprite.isAnchor()){
+          sprite.setPosition(
+            sprite.getBounds().x + x,
+            sprite.getBounds().y + y
+          )
+        }
+      })
   }
 
   const move = (x, y) => {
-    if(getParent() && getParent().isSprite){
-      offset.x += x
-      offset.y += y
-    }
-    else{
-      bounds.x += x
-      bounds.y += y
-    }
-    updateSpriteBounds()
+    bounds.x += x
+    bounds.y += y
+    updateSpriteBounds(x, y)
     checkBounds()
     
     if(instance){
@@ -197,37 +198,32 @@ export default () => {
     }
   }
 
-  const getOffset = () => offset
-
-  const setOffset = (x, y) => {
-    offset.x = x
-    offset.y = y
-    sprites.forEach(sprite => sprite.setOffset(
-      sprite.getOffset().x - x,
-      sprite.getOffset().y - y
-    ))
-    updateSpriteBounds()
-    updateUI()
-  }
-
   const setBounds = (x, y, width, height) => {
+    let delta = [
+      bounds.x - x,
+      bounds.y - y
+    ]
     bounds.x = x
     bounds.y = y
     bounds.width = width
     bounds.height = height
-    updateSpriteBounds()
+    updateSpriteBounds(...delta)
     updateUI()
   }
   const setPosition = (x, y) => {
+    let delta = [
+      x - bounds.x,
+      y - bounds.y
+    ]
     bounds.x = x
     bounds.y = y
-    updateSpriteBounds()
+    updateSpriteBounds(...delta)
     updateUI()
   }
   const setSize = (width, height) => {
     bounds.width = width
     bounds.height = height
-    updateSpriteBounds()
+    // updateSpriteBounds()
     updateUI()
   }
   const getBounds = () => bounds
@@ -255,17 +251,29 @@ export default () => {
     if(!instance) return null
     const maxX = instance.getOptions().RESOLUTION[0]
     const maxY = instance.getOptions().RESOLUTION[1]
-    if(bounds.x < 0)
+    let delta = [0, 0]
+    if(bounds.x < 0){
+      delta[0] = bounds.x * -1
       bounds.x = 0
-    if(bounds.y < 0)
+    }
+    if(bounds.y < 0){
+      delta[1] = bounds.y * -1
       bounds.y = 0
-    if(bounds.x + bounds.width > maxX)
+    }
+    if(bounds.x + bounds.width > maxX){
+      delta[0] = (bounds.x + bounds.width - maxX) * -1
       bounds.x = maxX - bounds.width
-    if(bounds.y + bounds.height > maxY)
+    }
+    if(bounds.y + bounds.height > maxY){
+      delta[1] = (bounds.y + bounds.height - maxY) * -1
       bounds.y = maxY - bounds.height
-    updateSpriteBounds()
+    }
+    updateSpriteBounds(...delta)
     updateUI()
   }
+
+  const setAnchor = bool => anchor = bool
+  const isAnchor = () => anchor
 
   // util
 
@@ -345,20 +353,23 @@ export default () => {
     clearUI()
     if(parent && parent.removeSprite) parent.removeSprite(exportable)
     parent = undefined
+    sprites.forEach(s => s.destroy())
+    // Object.keys(exportable).forEach(val => delete exportable[val])
   }
 
   // getInstance
   const getInstance = () => instance
 
-  const exportable = { isSprite: true,
+  let exportable = { isSprite: true,
     setAnimation, addAnimation, load, render,
     postRender, move, flip, getBounds, checkBounds,
     setOutline, setBackground, addBehavior, removeBehavior,
     setBounds, setPosition, setSize, getCenter,
     trackUI, updateUI, getUI, clearUI,
     getSize, getPosition, isTouching, setParent, destroy,
-    addSprite, removeSprite, setOffset, getParent, getOffset,
-    children, setHide, setAnimationBuffer, getInstance
+    addSprite, removeSprite, getParent,
+    children, setHide, setAnimationBuffer, getInstance, getSprites,
+    setAnchor, isAnchor
   }
 
   return exportable

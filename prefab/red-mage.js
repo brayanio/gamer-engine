@@ -12,12 +12,12 @@ export default gmr.prefab(
     sprite.flip()
     
     const b = sprite.getBounds()
-    const healthBar = prefabProgress(instance).sprite( [
+    const healthBar = prefabProgress(instance).sprite(
       b.x + (b.width / 4),
       b.y - 25,
       b.width / 2,
       33
-    ])
+    )
     sprite.addSprite( healthBar )
 
     behaviorStats.attach( sprite )
